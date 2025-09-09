@@ -10,5 +10,8 @@
     <string name="button_text_partcipar">Participar</string>
     <string name="no_votation_actives_title">En este momento no hay votaciones activas.</string>
     <string name="no_votation_actives_subtitle">Por favor, vuelve a intentarlo más tarde.</string>
+    <string name="descripcion_ampliada">Ver descripción ampliada</string>
+    <string name="votar_candidatp">Votar por este candidato</string>
+
 
 </resources>
