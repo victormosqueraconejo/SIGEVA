@@ -4,8 +4,11 @@
     <color name="white">#FFFFFFFF</color>
     <color name="primary_color">#FFFFFFFF</color>
     <color name="secondary_color">#FFFFFFFF</color>
-    <color name="background_color">#FFFFFFFF</color>
+    <color name="background_color">#E5E7EB</color>
     <color name="button_background_tint">#5031C9</color>
     <color name="text_color_default">#FFFFFF</color>
+    <color name="text_color_no_votations_title">#4B5563</color>
+    <color name="text_color_no_votations_subtitle">#9CA3AF</color>
+
 
 </resources>
