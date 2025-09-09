@@ -1,13 +1,20 @@
 package com.victor.sigeva
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.RecyclerView
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -45,5 +52,9 @@ class LoginActivity : AppCompatActivity() {
 
             queue.add(request)
         }
+
+
+
+
     }
 }
