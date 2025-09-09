@@ -7,5 +7,8 @@
     <string name="available_candidates">Candidatos Disponibles</string>
     <string name="available_votations">Votaciones Disponibles</string>
     <string name="description_login">Sistema de Gestión de Votaciones de Aprendices</string>
+    <string name="button_text_partcipar">Participar</string>
+    <string name="no_votation_actives_title">En este momento no hay votaciones activas.</string>
+    <string name="no_votation_actives_subtitle">Por favor, vuelve a intentarlo más tarde.</string>
 
 </resources>

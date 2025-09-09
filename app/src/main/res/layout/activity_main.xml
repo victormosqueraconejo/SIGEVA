@@ -5,72 +5,98 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_color"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/txtAppName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textSize="30sp"
-        android:layout_marginBottom="50dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/txtEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:text="@string/email"
-
-        app:layout_constraintTop_toBottomOf="@id/txtAppName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:textSize="26sp"
-        />
-
-
-   <EditText
-       android:id="@+id/edName"
-       android:layout_width="200sp"
-       android:layout_height="wrap_content"
-       app:layout_constraintTop_toBottomOf="@id/txtEmail"
-       app:layout_constraintStart_toStartOf="parent"
-       android:hint="@string/example_email"
-       app:layout_constraintEnd_toEndOf="parent"
-       />
-
-    <TextView
-        android:id="@+id/txtPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/password"
-        app:layout_constraintTop_toBottomOf="@id/edName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:textSize="26sp"
-        />
-
-
-    <!--Reemplazar cuando tengamos el diseño -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/name_text_input"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    <LinearLayout
         android:layout_width="match_parent"
-        app:layout_constraintTop_toBottomOf="@id/txtPassword"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:id="@+id/llTopBar"
         >
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/name_edit_text"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/sigeva_logo"
+            android:layout_margin="20dp"
+            />
+
+    </LinearLayout>
+    
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="12dp"
+        android:id="@+id/cardNoVotaciones"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="50sp"
+        android:layout_marginTop="35sp"
+        app:layout_constraintTop_toBottomOf="@id/llTopBar"
+        >
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="prueba" />
+            android:orientation="vertical"
+            >
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/sad_face"
+                android:layout_gravity="center"
+                android:layout_margin="20sp"
+                />
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_votation_actives_title"
+                android:textSize="16sp"
+                android:textAlignment="center"
+                android:textColor="@color/text_color_no_votations_title"
+            />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_votation_actives_subtitle"
+                android:textSize="14sp"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/text_color_no_votations_subtitle"
+            />
+
+
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:id="@+id/recyclerViewVotacionesActivas"
+        app:layout_constraintTop_toBottomOf="@id/llTopBar"
+        android:layout_marginTop="35dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="50dp"
+        tools:listitem="@layout/item_recycler_votaciones_activas"
+        />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
