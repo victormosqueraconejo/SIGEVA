@@ -8,12 +8,68 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/txtAppName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:text="@string/app_name"
+        android:textSize="30sp"
+        android:layout_marginBottom="50dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="@string/email"
+
+        app:layout_constraintTop_toBottomOf="@id/txtAppName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="26sp"
+        />
+
+
+   <EditText
+       android:id="@+id/edName"
+       android:layout_width="200sp"
+       android:layout_height="wrap_content"
+       app:layout_constraintTop_toBottomOf="@id/txtEmail"
+       app:layout_constraintStart_toStartOf="parent"
+       android:hint="@string/example_email"
+       app:layout_constraintEnd_toEndOf="parent"
+       />
+
+    <TextView
+        android:id="@+id/txtPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/password"
+        app:layout_constraintTop_toBottomOf="@id/edName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="26sp"
+        />
+
+
+    <!--Reemplazar cuando tengamos el diseño -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/name_text_input"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/txtPassword"
+        android:layout_height="50dp"
+        >
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/name_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="prueba" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
