@@ -1,9 +1,7 @@
-// app/build.gradle.kts (Nivel de Módulo app)
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
 }
-
 
 android {
     namespace = "com.victor.sigeva"
@@ -38,18 +36,19 @@ android {
 }
 
 dependencies {
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
 
     // Gson para manejar la respuesta de la API
-    implementation("com.google.code.gson:gson:2.13.1") // Considera agregar esto a tu libs.versions.toml también
+    implementation("com.google.code.gson:gson:2.13.1")
 
     implementation(libs.androidx.constraintlayout)
 
     // Volley para hacer las peticiones de la API
-    implementation("com.android.volley:volley:1.2.1") // Considera agregar esto a tu libs.versions.toml también
+    implementation("com.android.volley:volley:1.2.1")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
