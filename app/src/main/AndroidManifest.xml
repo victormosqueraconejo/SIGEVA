@@ -12,6 +12,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SIGEVA">
         <activity
+            android:name=".VotoExitosoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ConfirmarVotoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SeleccionCandidatosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

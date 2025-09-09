@@ -5,7 +5,7 @@
     <color name="primary_color">#FFFFFFFF</color>
     <color name="secondary_color">#FFFFFFFF</color>
     <color name="background_color">#FFFFFFFF</color>
-    <color name="button_background_tint">#FFFFFF</color>
+    <color name="button_background_tint">#39A900</color>
     <color name="text_color_default">#FFFFFF</color>
 
 </resources>
