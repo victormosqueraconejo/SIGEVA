@@ -54,11 +54,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/title_email"
+
             android:text="@string/email"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/description_login"
             />
+
+
+
+        <Button
+            android:layout_width="150sp"
+            android:layout_height="50sp"
+            style="@style/primary_button"
+            app:layout_constraintTop_toBottomOf="@id/title_email"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="50dp"
+            android:id="@+id/btn"
+
+            />
+
 
 
 
