@@ -8,4 +8,14 @@
     <string name="available_votations">Votaciones Disponibles</string>
     <string name="description_login">Sistema de Gestión de Votaciones de Aprendices</string>
 
+    //Confirmacion de Votos
+    <string name="title_Confirmacion">Confirmar Voto</string>
+    <string name="description_confirmacion">Ingresa el codigo de 6 digitos recibido en el correo</string>
+    <string name="btnConfirm">Confirmar Voto</string>
+
+
+    //Exito de Votos
+    <string name="textExito">¡Tu voto fue registrado con exito</string>
+    <string name="btnHome">Volver al inicio</string>
+
 </resources>
