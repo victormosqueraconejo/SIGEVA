@@ -33,13 +33,15 @@
 
 
     <TextView
-        android:layout_width="wrap_content"
+
+        android:maxWidth="200dp"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:layout_height="wrap_content"
         android:id="@+id/centroItemVotation"
         style="@style/description_item_votation"
         app:layout_constraintStart_toEndOf="@id/ic_votation_layout"
         tools:text="Centro de Servicios y Gestión Empresarial"
-        android:layout_marginBottom="20dp"
         app:layout_constraintTop_toBottomOf="@id/titleItemVotation"
         />
     <TextView
@@ -53,8 +55,10 @@
 
         />
 
+
     <com.google.android.material.button.MaterialButton
         android:layout_width="0dp"
+        android:id="@+id/btnParctiparVotaciones"
         android:layout_height="wrap_content"
         android:text="@string/button_text_partcipar"
         app:icon="@drawable/ic_touch_24"
