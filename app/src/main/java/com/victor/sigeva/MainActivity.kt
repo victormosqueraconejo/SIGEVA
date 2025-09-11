@@ -16,49 +16,27 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 
 class MainActivity : AppCompatActivity() {
+    lateinit var recyclerViewVotaciones : RecyclerView
+    var lista = mutableListOf<Votacion>(
+        Votacion(null,"Cauca","Centro de Servicios y Gestion Empresarial", "Diurna" ),
+        Votacion(null,"Antioquia","Centro de Teleinformatica y Produccion Industrial", "Noctura" ),
+        Votacion(null,"Cauca","Centro de Servicios y Gestion Empresarial", "Diurna" )
+    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
 
-        findViewById<RecyclerView>(R.id.recyclerViewVotacionesActivas).setOnClickListener {
-            startActivity(Intent(this, SeleccionCandidatosActivity::class.java))
+
+        recyclerViewVotaciones = findViewById(R.id.recyclerViewVotacionesActivas)
+        recyclerViewVotaciones.layoutManager = LinearLayoutManager(this)
+        var adapterVotacion = AdapterVotacionesActivas(lista) { votacion ->
+            // TODO: Hacer el intent para llevar a la siguiente pagina y enviar el la votacion
+            var  intent  = Intent(this, SeleccionCandidatosActivity::class.java)
+            startActivity(intent)
         }
-        findViewById<CardView>(R.id.cardNoVotaciones).setOnClickListener {
-            startActivity(Intent(this, SeleccionCandidatosActivity::class.java))
-        }
-        startActivity(Intent(this, SeleccionCandidatosActivity::class.java))
-
-
-
-        var listaGlobal  = mutableListOf<Usuario>(
-            Usuario(1,"USuario 1", "Manana", "CTPI"),
-            Usuario(2,"USuario 2", "Tarde", "Comercio"),
-            Usuario(3,"USuario 3", "Manana", "CTPI"),
-        )
-
-        var recyclerView = findViewById<RecyclerView>(R.id.recyclerViewVotacionesActivas)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-        fun getUsuario(url : String) {
-
-            var client = Volley.newRequestQueue(this)
-            var request = StringRequest(Request.Method.GET, url, { response ->
-                var gson = Gson()
-                var data = gson.fromJson(response, Usuario::class.java)
-                listaGlobal.add(data)
-
-            }, { error ->
-                Log.d("API", error.toString())
-            })
-
-            client.add(request)
-        }
-
-
-
-        getUsuario("www.api.com/usuario")
+        recyclerViewVotaciones.adapter = adapterVotacion
 
     }
 }

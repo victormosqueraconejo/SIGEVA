@@ -24,7 +24,10 @@ class LoginActivity : AppCompatActivity() {
         val email = findViewById<EditText>(R.id.input_email)
         val password = findViewById<EditText>(R.id.input_password)
         val btnLogin = findViewById<Button>(R.id.btn_login)
-        startActivity(Intent(this, MainActivity::class.java))
+        btnLogin.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+        //startActivity(Intent(this, MainActivity::class.java))
 
 //        btnLogin.setOnClickListener {
 //            val url = "http://tu-servidor.com/api/login"
