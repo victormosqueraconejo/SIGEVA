@@ -28,6 +28,9 @@ class MainActivity : AppCompatActivity() {
         findViewById<CardView>(R.id.cardNoVotaciones).setOnClickListener {
             startActivity(Intent(this, SeleccionCandidatosActivity::class.java))
         }
+        startActivity(Intent(this, SeleccionCandidatosActivity::class.java))
+
+
 
         var listaGlobal  = mutableListOf<Usuario>(
             Usuario(1,"USuario 1", "Manana", "CTPI"),
