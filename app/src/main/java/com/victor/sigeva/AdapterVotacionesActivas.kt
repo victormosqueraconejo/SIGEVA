@@ -46,4 +46,9 @@ class AdapterVotacionesActivas(var listaVotaciones : List<Votacion>, var onClick
 
     }
 
+    fun ActulizarVotacion(newList : List<Votacion>) {
+        listaVotaciones = newList
+        notifyDataSetChanged()
+    }
+
 }

@@ -42,5 +42,9 @@ class AdapterSelccionCandidatos(var listaCandidatos : List<Candidato>, var onCli
         var numeroTarjeton = view.findViewById<TextView>(R.id.numeroItemCandidatos)
         var btnVotar = view.findViewById<Button>(R.id.btnVotarCandidatoItemCandidatos)
     }
+    fun ActulizarAdapter(newList : List<Candidato>) {
+        listaCandidatos = newList
+        notifyDataSetChanged()
+    }
 
 }

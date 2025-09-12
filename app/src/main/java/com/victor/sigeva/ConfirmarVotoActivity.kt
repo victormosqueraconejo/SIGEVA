@@ -6,10 +6,16 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
+import com.google.android.material.button.MaterialButton
+import org.json.JSONObject
 
 class ConfirmarVotoActivity : AppCompatActivity() {
 
@@ -19,11 +25,15 @@ class ConfirmarVotoActivity : AppCompatActivity() {
     lateinit var et4 : EditText
     lateinit var et5 : EditText
     lateinit var et6 : EditText
+
+    lateinit var btnConfirmarVoto : MaterialButton
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_confirmar_voto)
 
+        btnConfirmarVoto = findViewById(R.id.btnConfirmarVoto)
 
         et1 = findViewById(R.id.et1)
         et2 = findViewById(R.id.et2)
@@ -32,9 +42,12 @@ class ConfirmarVotoActivity : AppCompatActivity() {
         et5 = findViewById(R.id.et5)
         et6 = findViewById(R.id.et6)
 
-        findViewById<Button>(R.id.btnConfirmarVoto).setOnClickListener {
-            startActivity(Intent(this, VotoExitosoActivity::class.java))
+        // TODO: Validar Codigo antes de enviar al backend
+
+        btnConfirmarVoto.setOnClickListener {
+            EnviarVoto(LoginActivity.aprendiz.id,intent.getIntExtra("idCandidato", 0)) // Todo: Cambir el default value
         }
+
 
 
 
@@ -45,6 +58,24 @@ class ConfirmarVotoActivity : AppCompatActivity() {
 
     }
 
+
+    fun EnviarVoto(idUsuario : Int, idCandidato : Int) {
+
+        var url = ""
+
+        var datosPost = JSONObject()
+        datosPost.put("idUsuario", idUsuario)
+        datosPost.put("idCandidato", idCandidato)
+
+        var client = Volley.newRequestQueue(this)
+        var request = JsonObjectRequest(Request.Method.POST, url, datosPost, {
+            response -> // TODO: Respuesta correcta o respuesta incorrecta
+
+        }, { error ->
+            Toast.makeText(this, "Error al cargar el voto.", Toast.LENGTH_SHORT).show()
+        })
+        client.add(request)
+    }
 
 
     fun setupOtpInputs() {
