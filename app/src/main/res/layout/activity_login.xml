@@ -111,7 +111,7 @@
                 android:layout_height="wrap_content"
                 android:text="Ingresar"
                 android:background="@drawable/background_button_radius"
-                android:backgroundTint="@color/button_background_tint"
+                app:backgroundTint="@color/button_background_tint"
                 android:textColor="@android:color/white"
                 app:layout_constraintTop_toBottomOf="@id/input_password"
                 app:layout_constraintStart_toStartOf="parent"

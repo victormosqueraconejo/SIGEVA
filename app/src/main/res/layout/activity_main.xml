@@ -23,8 +23,8 @@
         >
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="20dp"
             android:src="@drawable/sigeva_logo"
             android:layout_margin="20dp"
             />
@@ -47,6 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:visibility="gone"
             >
 
             <ImageView
@@ -54,6 +55,7 @@
                 android:layout_height="60dp"
                 android:src="@drawable/sad_face"
                 android:layout_gravity="center"
+
                 android:layout_margin="20sp"
                 />
             
@@ -95,7 +97,7 @@
         android:layout_marginTop="35dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginHorizontal="50dp"
+        android:layout_marginHorizontal="25dp"
         tools:listitem="@layout/item_recycler_votaciones_activas"
         />
 
