@@ -14,7 +14,9 @@ class VotoExitosoActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_voto_exitoso)
         findViewById<Button>(R.id.btnVolverAlInicio).setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
+            var i = Intent(this, MainActivity::class.java)
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(i)
         }
     }
 }

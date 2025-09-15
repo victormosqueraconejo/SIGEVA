@@ -3,6 +3,7 @@ package com.victor.sigeva
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +27,12 @@ class SeleccionCandidatosActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_seleccion_candidatos)
+
+        var btnBack = findViewById<ImageView>(R.id.btnArrowBack)
+        btnBack.setOnClickListener {
+            finish()
+        }
+
         idEleccionExtra = intent.getIntExtra("idEleccion",0)
 
         recyclerViewCandidatos = findViewById(R.id.recyclerViewSeleccionCandidato)

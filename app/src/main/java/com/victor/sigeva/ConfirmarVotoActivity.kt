@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.flagging.Flags
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.android.volley.Request
@@ -50,8 +51,6 @@ class ConfirmarVotoActivity : AppCompatActivity() {
 
 
 
-
-
         setupOtpInputs()
 
 
@@ -61,15 +60,19 @@ class ConfirmarVotoActivity : AppCompatActivity() {
 
     fun EnviarVoto(idUsuario : Int, idCandidato : Int) {
 
-        var url = ""
+        var url = "https://sigevaback-0rj7.onrender.com/api/votoXCandidato/crear"
 
         var datosPost = JSONObject()
-        datosPost.put("idUsuario", idUsuario)
-        datosPost.put("idCandidato", idCandidato)
+        datosPost.put("idAprendiz", idUsuario)
+        datosPost.put("idcandidatos", idCandidato)
+        datosPost.put("contador", 1)
 
         var client = Volley.newRequestQueue(this)
         var request = JsonObjectRequest(Request.Method.POST, url, datosPost, {
             response -> // TODO: Respuesta correcta o respuesta incorrecta
+            var i = Intent(this, VotoExitosoActivity::class.java)
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(i)
 
         }, { error ->
             Toast.makeText(this, "Error al cargar el voto.", Toast.LENGTH_SHORT).show()

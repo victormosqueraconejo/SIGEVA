@@ -29,6 +29,7 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:id="@+id/btnArrowBack"
                 android:src="@drawable/ic_arrow_back_24"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
