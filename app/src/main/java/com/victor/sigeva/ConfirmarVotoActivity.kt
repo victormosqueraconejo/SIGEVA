@@ -52,7 +52,8 @@ class ConfirmarVotoActivity : AppCompatActivity() {
         // TODO: Validar Codigo antes de enviar al backend
 
         btnConfirmarVoto.setOnClickListener {
-            EnviarVoto(LoginActivity.aprendiz.id,intent.getIntExtra("idCandidato", 0), formatearVotoStringToInt(idEleccionExtra)) // Todo: Cambir el default value
+            //EnviarVoto(LoginActivity.aprendiz.id,intent.getIntExtra("idCandidato", 0), formatearVotoStringToInt(idEleccionExtra)) // Todo: Cambir el default value
+            startActivity(Intent(this, VotoExitosoActivity::class.java))
         }
 
 
@@ -74,7 +75,7 @@ class ConfirmarVotoActivity : AppCompatActivity() {
 
     fun EnviarVoto(idUsuario: Int, idCandidato: Int, idEleccion: Int) {
 
-        val url = "https://sigevaback-0rj7.onrender.com/api/votoXCandidato/crear/"
+        val url = "https://sigevaback-real.onrender.com/api/votoXCandidato/crear/"
 
         val datosPost = JSONObject().apply {
             put("idaprendiz", idUsuario)

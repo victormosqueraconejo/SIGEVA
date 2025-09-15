@@ -22,10 +22,10 @@ class AdapterSelccionCandidatos(var listaCandidatos : List<Candidato>, var onCli
     ) {
         var item = listaCandidatos[position]
 
-        //holder.nombreCandidato.text = item.nombres
-        //holder.programaCandidato.text = item.programa
+        holder.nombreCandidato.text = item.nombres
+        //holder.programaCandidato.text = LoginActivity.aprendiz.
         holder.descripcionCandidato.text = item.propuesta
-        holder.numeroTarjeton.text = item.numeroTarjeton.toString()
+        holder.numeroTarjeton.text = "00${item.numeroTarjeton}"
         holder.btnVotar.setOnClickListener {
             onClickCandidato(item)
         }

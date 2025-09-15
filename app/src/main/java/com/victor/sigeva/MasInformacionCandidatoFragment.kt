@@ -11,7 +11,10 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.collection.floatIntMapOf
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import org.json.JSONObject
 
 private const val ARG_PARAM1 = "param1"
 
@@ -55,9 +58,9 @@ class MasInformacionCandidatoFragment : BottomSheetDialogFragment() {
 
 
 
-        //nombreCandidatoFragment.text = param1?.nombres ?: "Nombre no encontrado"
+        nombreCandidatoFragment.text = param1?.nombres ?: "Nombre no encontrado"
         //programaCandidatoFragment.text = param1?.programa ?: "Programa no encontrado"
-        numeroCandidatoFragment.text = param1?.numeroTarjeton ?: "000"
+        numeroCandidatoFragment.text = "00${param1?.numeroTarjeton}" ?: "000"
         descripcionCandidatoFragment.text = param1?.propuesta ?: "Descripcion no encontrada"
 
 
@@ -72,9 +75,28 @@ class MasInformacionCandidatoFragment : BottomSheetDialogFragment() {
             startActivity(i)
         }
 
-
-
     }
+//
+//    fun obtenerCodigoOTPParaAprendiz() {
+//        var url = "https://sigevaback-real.onrender.com/api/validaciones/generarOtp"
+//        var client = Volley.newRequestQueue(view.context)
+//        var parametros = JSONObject().apply {
+//            put("aprendiz_idaprendiz", LoginActivity.aprendiz.id)
+//            put("elecciones_ideleccion", )
+//            put("candidato_id", )
+//        }
+//
+//
+//
+//        var request = JsonObjectRequest (Method.POST, url, parametros, {
+//            response ->
+//        }, { error ->
+//
+//        })
+
+
+    //}
+
 
     companion object {
 

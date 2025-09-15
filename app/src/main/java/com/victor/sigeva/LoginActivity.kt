@@ -35,7 +35,7 @@ class LoginActivity : AppCompatActivity() {
 
     // Me retorna unicamente la informacion de usuario
     fun GetInformacionAprendiz(nombreCuenta : String, password : String, ValidarRespuesta : (AprendizAPI) -> Unit) {
-        val url = "https://sigevaback-0rj7.onrender.com/api/aprendiz/login/"
+        val url = "https://sigevaback-real.onrender.com/api/aprendiz/login/"
         val client = Volley.newRequestQueue(this)
 
         val parametros = JSONObject()
@@ -60,6 +60,7 @@ class LoginActivity : AppCompatActivity() {
             if (data.message == "Autenticado") {
                 Toast.makeText(this, "Autenticado con éxito.", Toast.LENGTH_SHORT).show()
                 aprendiz = data.data
+                Log.d("Aprendiz" , aprendiz.toString())
                 startActivity(Intent(this, MainActivity::class.java))
             } else {
                 mostrarModal("Error de autenticación", "Correo o contraseña incorrectos.")

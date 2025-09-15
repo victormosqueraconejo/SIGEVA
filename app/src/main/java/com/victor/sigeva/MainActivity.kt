@@ -7,6 +7,8 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
@@ -16,12 +18,15 @@ import com.google.gson.Gson
 
 class MainActivity : AppCompatActivity() {
     lateinit var recyclerViewVotaciones : RecyclerView
+    lateinit var cardNoVotaciones : CardView
     var lista = mutableListOf<Votacion>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContentView(R.layout.activity_main)
+        cardNoVotaciones = findViewById(R.id.cardNoVotaciones)
 
         recyclerViewVotaciones = findViewById(R.id.recyclerViewVotacionesActivas)
         recyclerViewVotaciones.layoutManager = LinearLayoutManager(this)
@@ -49,7 +54,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun GetVotacion(actualizarVotacion: (List<Votacion>) -> Unit) {
-        val url = "https://sigevaback-0rj7.onrender.com/api/eleccion/activas"
+        val url = "https://sigevaback-real.onrender.com/api/eleccionPorCentro/${LoginActivity.aprendiz.CentroFormacion}"
         val client = Volley.newRequestQueue(this)
 
         val request = StringRequest(Request.Method.GET, url, { response ->
@@ -59,12 +64,15 @@ class MainActivity : AppCompatActivity() {
             // respuesta no sea nula
             if (data != null && data.eleccionesActivas != null) {
                 actualizarVotacion(data.eleccionesActivas)
+                cardNoVotaciones.isVisible = false
             } else {
                 Toast.makeText(this, "No se pudieron obtener las votaciones.", Toast.LENGTH_SHORT).show()
+                cardNoVotaciones.isVisible = true
             }
 
         }, { error ->
             Toast.makeText(this, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
+            cardNoVotaciones.isVisible = true
         })
 
         client.add(request)
