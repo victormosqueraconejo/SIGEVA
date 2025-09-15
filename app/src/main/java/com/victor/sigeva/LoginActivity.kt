@@ -2,6 +2,7 @@ package com.victor.sigeva
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -53,24 +54,25 @@ class LoginActivity : AppCompatActivity() {
 
     // Me retorna unicamente la inforamcion de usuario
 
-    fun GetInformacionAprendiz(nombreCuenta : String, password : String, ValidarData : (AprendizAPI) -> Unit) {
-        var url = ""
+    fun GetInformacionAprendiz(nombreCuenta : String, password : String, ValidarRespuesta : (AprendizAPI) -> Unit) {
+        var url = "https://sigevaback-0rj7.onrender.com/api/aprendiz/login/"
         var client = Volley.newRequestQueue(this)
 
         var parametros = JSONObject()
-        parametros.put("email", nombreCuenta)
-        parametros.put("password", password)
+        parametros.put("email", nombreCuenta.toString())
+        parametros.put("password", password.toString())
 
         var request = JsonObjectRequest(Request.Method.POST, url, parametros, {
                 response ->
             val gson = Gson()
             var data = gson.fromJson(response.toString(), AprendizAPI::class.java)
-            ValidarData(data)
-
+            ValidarRespuesta(data)
 
         }, { error ->
+            Log.d("API", error.toString())
             Toast.makeText(this, "Error: ${error.message.toString()}", Toast.LENGTH_SHORT).show() // Cambiar por un mensaje mejor
         })
+
 
         client.add(request)
     }

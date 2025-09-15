@@ -16,21 +16,22 @@ data class AprendizAPI(
 
 data class VotacionesAPI(
     var message: String,
-    var votaciones : List<Votacion>
+    var eleccionesActivas : List<Votacion>
 )
 
 data class CandidatoAPI(
     var message: String,
-    var Candidatos : List<Candidato>
+    var data : List<Candidato>
 )
 
 
 
 data class Votacion (
-    var id : Int? = null,
-    var regional : String,
-    var centro : String,
-    var jornada : String
+    var ideleccion : Int? = null,
+    var idCentroFormacion : Int,
+    //var regional : String,
+    var nombre : String,
+    //var jornada : String
 )
 
 
@@ -46,10 +47,10 @@ data class Aprendiz(
 
 @Parcelize
 data class Candidato(
-    var id: Int? = null,
-    var nombre: String,
+    var idcandidatos: Int? = null,
+    var nombres: String,
     var numeroTarjeton: String,
-    var programa: String,
-    var descripcoin: String
+    //var propuesa: String,
+    var propuesta: String
 ) : Parcelable
 

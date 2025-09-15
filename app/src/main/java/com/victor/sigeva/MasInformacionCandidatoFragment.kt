@@ -55,10 +55,10 @@ class MasInformacionCandidatoFragment : BottomSheetDialogFragment() {
 
 
 
-        nombreCandidatoFragment.text = param1?.nombre ?: "Nombre no encontrado"
-        programaCandidatoFragment.text = param1?.programa ?: "Programa no encontrado"
+        nombreCandidatoFragment.text = param1?.nombres ?: "Nombre no encontrado"
+        //programaCandidatoFragment.text = param1?.programa ?: "Programa no encontrado"
         numeroCandidatoFragment.text = param1?.numeroTarjeton ?: "000"
-        descripcionCandidatoFragment.text = param1?.descripcoin ?: "Descripcion no encontrada"
+        descripcionCandidatoFragment.text = param1?.propuesta ?: "Descripcion no encontrada"
 
 
         btnCancelarFragment.setOnClickListener {
@@ -67,7 +67,7 @@ class MasInformacionCandidatoFragment : BottomSheetDialogFragment() {
 
         btnVotarFragment.setOnClickListener {
             var i = Intent(view.context, ConfirmarVotoActivity::class.java)
-            i.putExtra("idCandidato", param1?.id)
+            i.putExtra("idCandidato", param1?.idcandidatos)
             startActivity(i)
         }
 
