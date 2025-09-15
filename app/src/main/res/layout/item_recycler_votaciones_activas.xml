@@ -25,7 +25,7 @@
         android:id="@+id/titleItemVotation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Regional: Antioquia"
+        android:text="Regional: Antioquia"
         style="@style/title_item_votation"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/ic_votation_layout"
@@ -41,7 +41,7 @@
         android:id="@+id/centroItemVotation"
         style="@style/description_item_votation"
         app:layout_constraintStart_toEndOf="@id/ic_votation_layout"
-        tools:text="Centro de Servicios y Gestión Empresarial"
+        android:text="Centro de Servicios y Gestión Empresarial"
         app:layout_constraintTop_toBottomOf="@id/titleItemVotation"
         />
 
@@ -51,7 +51,7 @@
         android:id="@+id/jornadaItemVotation"
         style="@style/description_item_votation"
         app:layout_constraintStart_toEndOf="@id/ic_votation_layout"
-        tools:text="Mañana"
+        android:text="Mañana"
         app:layout_constraintTop_toBottomOf="@id/centroItemVotation"
 
         />

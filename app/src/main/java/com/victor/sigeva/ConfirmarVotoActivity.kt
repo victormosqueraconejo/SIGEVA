@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.flagging.Flags
 import androidx.core.view.ViewCompat
@@ -17,6 +18,7 @@ import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.button.MaterialButton
+import com.google.gson.Gson
 import org.json.JSONObject
 
 class ConfirmarVotoActivity : AppCompatActivity() {
@@ -50,7 +52,7 @@ class ConfirmarVotoActivity : AppCompatActivity() {
         // TODO: Validar Codigo antes de enviar al backend
 
         btnConfirmarVoto.setOnClickListener {
-            EnviarVoto(LoginActivity.aprendiz.id,intent.getIntExtra("idCandidato", 0)) // Todo: Cambir el default value
+            EnviarVoto(LoginActivity.aprendiz.id,intent.getIntExtra("idCandidato", 0), formatearVotoStringToInt(idEleccionExtra)) // Todo: Cambir el default value
         }
 
 
@@ -60,47 +62,86 @@ class ConfirmarVotoActivity : AppCompatActivity() {
 
 
     }
+    fun formatearVotoStringToInt(idEleccion : String) : Int{
+        return when (idEleccion) {
+            "001" -> 1
+            "002" -> 2
+            "003" -> 3
+            "004" -> 4
+            else -> 0
+        }
+    }
 
+    fun EnviarVoto(idUsuario: Int, idCandidato: Int, idEleccion: Int) {
 
-    fun EnviarVoto(idUsuario : Int, idCandidato : Int) {
+        val url = "https://sigevaback-0rj7.onrender.com/api/votoXCandidato/crear/"
 
-        var url = "https://sigevaback-0rj7.onrender.com/api/votoXCandidato/crear"
+        val datosPost = JSONObject().apply {
+            put("idaprendiz", idUsuario)
+            put("idcandidatos", idCandidato)
+            put("ideleccion", idEleccion)
+            put("contador", 1)
 
-        fun formatearVotoStringToInt(idEleccion : String) : Int{
-            return when (idEleccion) {
-                "001" -> 1
-                "002" -> 2
-                "003" -> 3
-                "004" -> 4
-                else -> 0
-            }
         }
 
-        var datosPost = JSONObject()
-        datosPost.put("idaprendiz", idUsuario)
-        datosPost.put("idcandidatos", idCandidato)
-        datosPost.put("ideleccion", formatearVotoStringToInt(idEleccionExtra))
-        datosPost.put("contador", 1)
+        val client = Volley.newRequestQueue(this)
+        Log.d("API Voto", "Datos enviados: $datosPost")
 
-        var client = Volley.newRequestQueue(this)
-        var request = object : JsonObjectRequest(Request.Method.POST, url, datosPost, {
-            response -> // TODO: Respuesta correcta o respuesta incorrecta
-            var i = Intent(this, VotoExitosoActivity::class.java)
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(i)
+        val request = object : JsonObjectRequest(Method.POST, url, datosPost,
+            { response ->
+                try {
+                    val gson = Gson()
+                    val data = gson.fromJson(response.toString(), VotoAPI::class.java)
 
-        }, { error ->
-            Log.d("API VOto", error.toString())
-            Toast.makeText(this, "Error al cargar el voto.", Toast.LENGTH_SHORT).show()
-        }) {
+                    val i = Intent(this, VotoExitosoActivity::class.java).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
+                    if (data.message.contains("exitosamente", ignoreCase = true)) {
+                        // Caso de éxito → ir a pantalla de confirmación
+                        startActivity(i)
+                    } else {
+                        // Caso de error → mostrar modal con mensaje del servidor
+                        mostrarModal("Error al votar", data.message)
+                    }
+                } catch (e: Exception) {
+                    mostrarModal("Error parsing", e.message ?: "Error desconocido")
+                }
+            },{ error ->
+                val statusCode = error.networkResponse?.statusCode
+                val responseBody = error.networkResponse?.data?.let { String(it, Charsets.UTF_8) }
+
+                Log.e("API Voto", "Status: $statusCode, Body: $responseBody", error)
+
+                try {
+                    val gson = Gson()
+                    val data = gson.fromJson(responseBody, VotoAPI::class.java)
+                    mostrarModal("Error Petición", data.message)
+                } catch (e: Exception) {
+                    mostrarModal("Error Petición", responseBody ?: "Error desconocido")
+                }
+            }
+
+        ) {
+
             override fun getHeaders(): MutableMap<String, String> {
-                val headers = HashMap<String, String>()
-                headers["Content-Type"] = "application/json"
-                return headers
+                return hashMapOf("Content-Type" to "application/json")
             }
-
         }
+
         client.add(request)
+    }
+
+    fun mostrarModal(titulo: String, mensaje: String) {
+        AlertDialog.Builder(this)
+            .setTitle(titulo)
+            .setMessage(mensaje)
+            .setPositiveButton("Reintenter") { dialog, _ ->
+                EnviarVoto(LoginActivity.aprendiz.id,intent.getIntExtra("idCandidato", 0), formatearVotoStringToInt(idEleccionExtra)) // Todo: Cambir el default value
+                dialog.dismiss() }
+            .setNegativeButton("Cancelar") { dialog, which ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
 

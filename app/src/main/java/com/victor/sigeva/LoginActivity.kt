@@ -70,7 +70,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     // Modal
-    private fun mostrarModal(titulo: String, mensaje: String) {
+    fun mostrarModal(titulo: String, mensaje: String) {
         AlertDialog.Builder(this)
             .setTitle(titulo)
             .setMessage(mensaje)

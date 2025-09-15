@@ -48,9 +48,13 @@ data class Aprendiz(
 @Parcelize
 data class Candidato(
     var idcandidatos: Int? = null,
-    var nombres: String,
+    //var nombres: String,
     var numeroTarjeton: String,
     //var propuesa: String,
     var propuesta: String
 ) : Parcelable
 
+
+data class VotoAPI (
+    var message : String
+)

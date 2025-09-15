@@ -55,7 +55,7 @@ class MasInformacionCandidatoFragment : BottomSheetDialogFragment() {
 
 
 
-        nombreCandidatoFragment.text = param1?.nombres ?: "Nombre no encontrado"
+        //nombreCandidatoFragment.text = param1?.nombres ?: "Nombre no encontrado"
         //programaCandidatoFragment.text = param1?.programa ?: "Programa no encontrado"
         numeroCandidatoFragment.text = param1?.numeroTarjeton ?: "000"
         descripcionCandidatoFragment.text = param1?.propuesta ?: "Descripcion no encontrada"

@@ -42,7 +42,7 @@
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
                    android:layout_weight="1"
-                   tools:text="Carlos Mendoza"
+                   android:text="Carlos Mendoza"
                    android:textSize="28sp"
                    android:textStyle="bold"
                    />
@@ -51,7 +51,7 @@
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:textColor="@color/button_background_tint"
-                   tools:text="001"
+                   android:text="001"
                    android:layout_gravity="bottom"
                    android:textSize="28sp"
                    android:textStyle="bold"
@@ -64,7 +64,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="Gestion Empresarial"
+                android:text="Gestion Empresarial"
                 android:textSize="20dp"
                 android:id="@+id/programaItemCandidato"
                 android:textColor="@color/text_color_no_votations_title"
@@ -79,7 +79,7 @@
                 android:layout_marginTop="15dp"
                 android:textSize="16sp"
                 android:id="@+id/descripcionItemCandidato"
-                tools:text="Fomentar el emprendimiento a través de alianzas estratégicas con el sector productivo."
+                android:text="Fomentar el emprendimiento a través de alianzas estratégicas con el sector productivo."
                 />
 
 
