@@ -25,7 +25,7 @@
         android:id="@+id/titleItemVotation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Regional: Antioquia"
+        android:text="Regional: Antioquia"
         style="@style/title_item_votation"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/ic_votation_layout"
@@ -33,27 +33,33 @@
 
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
+        android:maxWidth="200dp"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:layout_height="wrap_content"
         android:id="@+id/centroItemVotation"
         style="@style/description_item_votation"
         app:layout_constraintStart_toEndOf="@id/ic_votation_layout"
-        tools:text="Centro de Servicios y Gestión Empresarial"
+        android:text="Centro de Servicios y Gestión Empresarial"
         app:layout_constraintTop_toBottomOf="@id/titleItemVotation"
         />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/jornadaItemVotation"
         style="@style/description_item_votation"
         app:layout_constraintStart_toEndOf="@id/ic_votation_layout"
-        tools:text="Mañana"
+        android:text="Mañana"
         app:layout_constraintTop_toBottomOf="@id/centroItemVotation"
 
         />
 
+
     <com.google.android.material.button.MaterialButton
         android:layout_width="0dp"
+        android:id="@+id/btnParctiparVotaciones"
         android:layout_height="wrap_content"
         android:text="@string/button_text_partcipar"
         app:icon="@drawable/ic_touch_24"
