@@ -19,16 +19,14 @@ class SeleccionCandidatosActivity : AppCompatActivity() {
 
 
     // TODO: Esta es la lista que se debe modificar en la peticion a la API
-    var lista = mutableListOf<Candidato>(
-        Candidato(null, "Carlos Mendoza", "001", "Gestion Empresarial", "Fomentar el emprendimiento a través de alianzas estratégicas con el sector productivo."),
-        Candidato(null, "Alex Chaguendo", "002", "Analisis y Desaroollo de Software", "Fomentar el emprendimiento a través de alianzas estratégicas con el sector productivo."),
-        Candidato(null, "Santiago Valencia", "003", "Construccion", "Fomentar el emprendimiento a través de alianzas estratégicas con el sector productivo.")
-    )
+    var lista = mutableListOf<Candidato>()
+    var idEleccionExtra : Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_seleccion_candidatos)
+        idEleccionExtra = intent.getIntExtra("idEleccion",0)
 
         recyclerViewCandidatos = findViewById(R.id.recyclerViewSeleccionCandidato)
         recyclerViewCandidatos.layoutManager = LinearLayoutManager(this)
@@ -44,14 +42,14 @@ class SeleccionCandidatosActivity : AppCompatActivity() {
     }
 
     fun GetCandidatos() {
-        var url = ""
+        var url = "https://sigevaback-0rj7.onrender.com/api/candidatos/listar/$idEleccionExtra"
         var client = Volley.newRequestQueue(this)
         var request = StringRequest(Request.Method.GET, url,
             { response ->
                 var gson = Gson()
                 var data = gson.fromJson(response, CandidatoAPI::class.java)
                 lista.clear()
-                lista = data.Candidatos as MutableList<Candidato>
+                lista = data.data as MutableList<Candidato>
                 adapterCandidatos.ActulizarAdapter(lista)
 
 

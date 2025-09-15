@@ -22,9 +22,9 @@ class AdapterVotacionesActivas(var listaVotaciones : List<Votacion>, var onClick
         position: Int
     ) {
         var item = listaVotaciones[position]
-        holder.regional.text = item.regional
-        holder.jornada.text = item.jornada
-        holder.centro.text = item.centro
+        holder.title.text = item.nombre
+        //holder.jornada.text = item.jornada
+        //holder.centro.text = item.centro
         holder.boton.setOnClickListener {
             onClickButotn(item)
         }
@@ -39,7 +39,7 @@ class AdapterVotacionesActivas(var listaVotaciones : List<Votacion>, var onClick
     }
 
     class ViewHolder(view : View) : RecyclerView.ViewHolder(view) {
-        var regional = view.findViewById<TextView>(R.id.titleItemVotation)
+        var title = view.findViewById<TextView>(R.id.titleItemVotation)
         var centro = view.findViewById<TextView>(R.id.centroItemVotation)
         var jornada = view.findViewById<TextView>(R.id.jornadaItemVotation)
         var boton = view.findViewById<Button>(R.id.btnParctiparVotaciones)
