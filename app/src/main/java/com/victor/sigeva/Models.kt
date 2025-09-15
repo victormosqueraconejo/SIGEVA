@@ -37,7 +37,7 @@ data class Votacion (
 
 data class Aprendiz(
     var id : Int,
-    var nombre : String,
+    var nombres : String,
     var apellidos : String,
     var estado : String,
     var perfil : String,

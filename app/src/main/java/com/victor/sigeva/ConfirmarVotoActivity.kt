@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -28,6 +29,7 @@ class ConfirmarVotoActivity : AppCompatActivity() {
     lateinit var et6 : EditText
 
     lateinit var btnConfirmarVoto : MaterialButton
+    lateinit var idEleccionExtra : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +37,8 @@ class ConfirmarVotoActivity : AppCompatActivity() {
         setContentView(R.layout.activity_confirmar_voto)
 
         btnConfirmarVoto = findViewById(R.id.btnConfirmarVoto)
+
+        idEleccionExtra = intent.getStringExtra("idEleccion")!!
 
         et1 = findViewById(R.id.et1)
         et2 = findViewById(R.id.et2)
@@ -62,21 +66,40 @@ class ConfirmarVotoActivity : AppCompatActivity() {
 
         var url = "https://sigevaback-0rj7.onrender.com/api/votoXCandidato/crear"
 
+        fun formatearVotoStringToInt(idEleccion : String) : Int{
+            return when (idEleccion) {
+                "001" -> 1
+                "002" -> 2
+                "003" -> 3
+                "004" -> 4
+                else -> 0
+            }
+        }
+
         var datosPost = JSONObject()
-        datosPost.put("idAprendiz", idUsuario)
+        datosPost.put("idaprendiz", idUsuario)
         datosPost.put("idcandidatos", idCandidato)
+        datosPost.put("ideleccion", formatearVotoStringToInt(idEleccionExtra))
         datosPost.put("contador", 1)
 
         var client = Volley.newRequestQueue(this)
-        var request = JsonObjectRequest(Request.Method.POST, url, datosPost, {
+        var request = object : JsonObjectRequest(Request.Method.POST, url, datosPost, {
             response -> // TODO: Respuesta correcta o respuesta incorrecta
             var i = Intent(this, VotoExitosoActivity::class.java)
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(i)
 
         }, { error ->
+            Log.d("API VOto", error.toString())
             Toast.makeText(this, "Error al cargar el voto.", Toast.LENGTH_SHORT).show()
-        })
+        }) {
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Content-Type"] = "application/json"
+                return headers
+            }
+
+        }
         client.add(request)
     }
 

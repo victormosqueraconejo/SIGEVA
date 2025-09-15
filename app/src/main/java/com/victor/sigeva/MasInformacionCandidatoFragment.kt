@@ -68,6 +68,7 @@ class MasInformacionCandidatoFragment : BottomSheetDialogFragment() {
         btnVotarFragment.setOnClickListener {
             var i = Intent(view.context, ConfirmarVotoActivity::class.java)
             i.putExtra("idCandidato", param1?.idcandidatos)
+            i.putExtra("idEleccion", numeroCandidatoFragment.text.toString())
             startActivity(i)
         }
 
