@@ -4,36 +4,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.RecyclerView
 import android.widget.EditText
 import android.widget.Toast
-
-
-
+import androidx.appcompat.app.AlertDialog
 
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
-import com.google.gson.JsonObject
-import com.google.gson.reflect.TypeToken
 import org.json.JSONObject
 
 
-// TODO: Para hacer validaciones tener en cuenta
-// 1. Si el usuario no existe, mostrar el respectivo mensaje
-// 2. Si falla la peticion, mostrar el mensaje para que lo vuelva a intentar
-
-
-
-
 class LoginActivity : AppCompatActivity() {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,31 +31,26 @@ class LoginActivity : AppCompatActivity() {
                 ValidarRespuesta(data)
             }
         }
-
     }
 
-
-    // Me retorna unicamente la inforamcion de usuario
-
+    // Me retorna unicamente la informacion de usuario
     fun GetInformacionAprendiz(nombreCuenta : String, password : String, ValidarRespuesta : (AprendizAPI) -> Unit) {
-        var url = "https://sigevaback-0rj7.onrender.com/api/aprendiz/login/"
-        var client = Volley.newRequestQueue(this)
+        val url = "https://sigevaback-0rj7.onrender.com/api/aprendiz/login/"
+        val client = Volley.newRequestQueue(this)
 
-        var parametros = JSONObject()
-        parametros.put("email", nombreCuenta.toString())
-        parametros.put("password", password.toString())
+        val parametros = JSONObject()
+        parametros.put("email", nombreCuenta)
+        parametros.put("password", password)
 
-        var request = JsonObjectRequest(Request.Method.POST, url, parametros, {
-                response ->
+        val request = JsonObjectRequest(Request.Method.POST, url, parametros, { response ->
             val gson = Gson()
-            var data = gson.fromJson(response.toString(), AprendizAPI::class.java)
+            val data = gson.fromJson(response.toString(), AprendizAPI::class.java)
             ValidarRespuesta(data)
 
         }, { error ->
             Log.d("API", error.toString())
-            Toast.makeText(this, "Error: ${error.message.toString()}", Toast.LENGTH_SHORT).show() // Cambiar por un mensaje mejor
+            mostrarModal("Error", "No se pudo conectar con el servidor. Inténtalo de nuevo.")
         })
-
 
         client.add(request)
     }
@@ -80,20 +58,27 @@ class LoginActivity : AppCompatActivity() {
     fun ValidarRespuesta(data : AprendizAPI) {
         if (data != null) {
             if (data.message == "Autenticado") {
-                Toast.makeText(this, "Autenticado con exito.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Autenticado con éxito.", Toast.LENGTH_SHORT).show()
                 aprendiz = data.data
                 startActivity(Intent(this, MainActivity::class.java))
-            }
-            else {
-                Toast.makeText(this, "Error al autenticar.", Toast.LENGTH_SHORT).show()
+            } else {
+                mostrarModal("Error de autenticación", "Correo o contraseña incorrectos.")
             }
         } else {
-            Toast.makeText(this, "Error al hacer la peticion.", Toast.LENGTH_SHORT).show()
+            mostrarModal("Error", "Ocurrió un problema al procesar la respuesta.")
         }
     }
+
+    // Modal
+    private fun mostrarModal(titulo: String, mensaje: String) {
+        AlertDialog.Builder(this)
+            .setTitle(titulo)
+            .setMessage(mensaje)
+            .setPositiveButton("Aceptar") { dialog, _ -> dialog.dismiss() }
+            .show()
+    }
+
     companion object {
         lateinit var aprendiz : Aprendiz
     }
-
 }
-

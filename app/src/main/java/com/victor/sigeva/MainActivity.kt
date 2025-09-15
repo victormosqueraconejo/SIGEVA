@@ -6,9 +6,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
@@ -25,38 +22,50 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-
-
         recyclerViewVotaciones = findViewById(R.id.recyclerViewVotacionesActivas)
         recyclerViewVotaciones.layoutManager = LinearLayoutManager(this)
-        var adapterVotacion = AdapterVotacionesActivas(lista) { votacion ->
-            // TODO: Hacer el intent para llevar a la siguiente pagina y enviar el la votacion
 
-            var  intent  = Intent(this, SeleccionCandidatosActivity::class.java)
+
+        // Al dar clic en una votacinn
+        val adapterVotacion = AdapterVotacionesActivas(lista) { votacion ->
+
+
+            val intent  = Intent(this, SeleccionCandidatosActivity::class.java)
             intent.putExtra("idEleccion", votacion.ideleccion)
             startActivity(intent)
         }
+
         recyclerViewVotaciones.adapter = adapterVotacion
-        GetVotacion() { votacions ->
-            adapterVotacion.ActulizarVotacion(votacions)
+
+        GetVotacion { votacions ->
+            //  si la lista está vacia o no
+            if (votacions.isNotEmpty()) {
+                adapterVotacion.ActulizarVotacion(votacions)
+            } else {
+                Toast.makeText(this, "No hay votaciones activas disponibles", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
     fun GetVotacion(actualizarVotacion: (List<Votacion>) -> Unit) {
-        var url = "https://sigevaback-0rj7.onrender.com/api/eleccion/activas"
-        var client = Volley.newRequestQueue(this)
+        val url = "https://sigevaback-0rj7.onrender.com/api/eleccion/activas"
+        val client = Volley.newRequestQueue(this)
 
-        var request = StringRequest(Request.Method.GET, url , { response ->
+        val request = StringRequest(Request.Method.GET, url, { response ->
             val gson = Gson()
-            var data = gson.fromJson(response, VotacionesAPI::class.java)
-            actualizarVotacion(data.eleccionesActivas)
+            val data = gson.fromJson(response, VotacionesAPI::class.java)
+
+            // respuesta no sea nula
+            if (data != null && data.eleccionesActivas != null) {
+                actualizarVotacion(data.eleccionesActivas)
+            } else {
+                Toast.makeText(this, "No se pudieron obtener las votaciones.", Toast.LENGTH_SHORT).show()
+            }
 
         }, { error ->
-            Toast.makeText(this, "Error: ${error.message.toString()}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
         })
 
         client.add(request)
-
     }
-
 }
