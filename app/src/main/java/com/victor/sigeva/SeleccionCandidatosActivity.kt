@@ -1,6 +1,5 @@
 package com.victor.sigeva
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
@@ -18,8 +17,7 @@ class SeleccionCandidatosActivity : AppCompatActivity() {
     lateinit var recyclerViewCandidatos: RecyclerView
     lateinit var adapterCandidatos : AdapterSelccionCandidatos
 
-
-    // TODO: Esta es la lista que se debe modificar en la peticion a la API
+    // Lista inicial
     var lista = mutableListOf<Candidato>()
     var idEleccionExtra : Int? = null
 
@@ -35,36 +33,42 @@ class SeleccionCandidatosActivity : AppCompatActivity() {
 
         idEleccionExtra = intent.getIntExtra("idEleccion",0)
 
+
         recyclerViewCandidatos = findViewById(R.id.recyclerViewSeleccionCandidato)
         recyclerViewCandidatos.layoutManager = LinearLayoutManager(this)
+
         adapterCandidatos = AdapterSelccionCandidatos(lista) { candidato ->
-            var bottomSheet = MasInformacionCandidatoFragment.newInstance(candidato)
+            val bottomSheet = MasInformacionCandidatoFragment.newInstance(candidato)
             bottomSheet.show(supportFragmentManager, "Mas Informacion")
         }
 
         recyclerViewCandidatos.adapter = adapterCandidatos
 
         GetCandidatos()
-
     }
 
     fun GetCandidatos() {
-        var url = "https://sigevaback-0rj7.onrender.com/api/candidatos/listar/$idEleccionExtra"
-        var client = Volley.newRequestQueue(this)
-        var request = StringRequest(Request.Method.GET, url,
-            { response ->
-                var gson = Gson()
-                var data = gson.fromJson(response, CandidatoAPI::class.java)
-                lista.clear()
-                lista = data.data as MutableList<Candidato>
-                adapterCandidatos.ActulizarAdapter(lista)
+        val url = "https://sigevaback-0rj7.onrender.com/api/candidatos/listar/$idEleccionExtra"
+        val client = Volley.newRequestQueue(this)
 
+        val request = StringRequest(Request.Method.GET, url,
+            { response ->
+                val gson = Gson()
+                val data = gson.fromJson(response, CandidatoAPI::class.java)
+
+
+                if (data != null && data.data != null && data.data.isNotEmpty()) {
+                    lista.clear()
+                    lista = data.data as MutableList<Candidato>
+                    adapterCandidatos.ActulizarAdapter(lista)
+                } else {
+                    Toast.makeText(this, "No hay candidatos disponibles para esta elección.", Toast.LENGTH_SHORT).show()
+                }
 
             }, { error ->
-                Toast.makeText(this, "Error : ${error.message.toString()}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Error al cargar candidatos: ${error.message}", Toast.LENGTH_SHORT).show()
             })
 
         client.add(request)
     }
-
 }
