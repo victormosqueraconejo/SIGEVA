@@ -62,12 +62,16 @@
                 android:layout_width="40dp"
                 android:layout_height="50dp"
                 android:maxLength="1"
+
                 android:id="@+id/et1"
                 android:hint="X"
                 android:textColor="@color/black"
                 android:gravity="center"
-                android:inputType="number"
+                android:textAllCaps="true"
                 android:layout_margin="1dp"
+                android:inputType="textVisiblePassword"
+                android:imeOptions="actionNext"
+
                 />
 
 
@@ -79,8 +83,11 @@
                 android:hint="X"
                 android:textColor="@color/black"
                 android:gravity="center"
-                android:inputType="number"
+                android:textAllCaps="true"
                 android:layout_margin="1dp"
+                android:inputType="textVisiblePassword"
+                android:imeOptions="actionNext"
+
                 />
 
 
@@ -92,8 +99,11 @@
                 android:textColor="@color/black"
                 android:gravity="center"
                 android:id="@+id/et3"
-                android:inputType="number"
+                android:textAllCaps="true"
                 android:layout_margin="1dp"
+                android:inputType="textVisiblePassword"
+                android:imeOptions="actionNext"
+
                 />
 
 
@@ -104,9 +114,12 @@
                 android:hint="X"
                 android:textColor="@color/black"
                 android:gravity="center"
-                android:inputType="number"
+                android:textAllCaps="true"
                 android:id="@+id/et4"
                 android:layout_margin="1dp"
+                android:inputType="textVisiblePassword"
+                android:imeOptions="actionNext"
+
                 />
 
             <EditText
@@ -117,8 +130,11 @@
                 android:textColor="@color/black"
                 android:gravity="center"
                 android:id="@+id/et5"
-                android:inputType="number"
+                android:textAllCaps="true"
                 android:layout_margin="1dp"
+                android:inputType="textVisiblePassword"
+                android:imeOptions="actionNext"
+
                 />
 
             <EditText
@@ -129,7 +145,9 @@
                 android:textColor="@color/black"
                 android:gravity="center"
                 android:id="@+id/et6"
-                android:inputType="number"
+                android:inputType="textVisiblePassword"
+                android:imeOptions="actionNext"
+
                 android:layout_margin="1dp"
                 />
 

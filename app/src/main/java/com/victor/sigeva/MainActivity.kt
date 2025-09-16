@@ -2,6 +2,8 @@ package com.victor.sigeva
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -31,24 +33,43 @@ class MainActivity : AppCompatActivity() {
         recyclerViewVotaciones = findViewById(R.id.recyclerViewVotacionesActivas)
         recyclerViewVotaciones.layoutManager = LinearLayoutManager(this)
 
-
-        // Al dar clic en una votacinn
+        // Al dar clic en una votacion
         val adapterVotacion = AdapterVotacionesActivas(lista) { votacion ->
-
-
-            val intent  = Intent(this, SeleccionCandidatosActivity::class.java)
+            val intent = Intent(this, SeleccionCandidatosActivity::class.java)
             intent.putExtra("idEleccion", votacion.ideleccion)
             startActivity(intent)
         }
 
         recyclerViewVotaciones.adapter = adapterVotacion
 
-        GetVotacion { votacions ->
-            //  si la lista está vacia o no
-            if (votacions.isNotEmpty()) {
-                adapterVotacion.ActulizarVotacion(votacions)
+        // CORRECCIÓN: Intentar cargar las votaciones, si falla, reintentar
+        cargarVotaciones(adapterVotacion, 0)
+    }
+
+    private fun cargarVotaciones(adapterVotacion: AdapterVotacionesActivas, intentos: Int) {
+        try {
+            // Verificar que aprendiz esté disponible
+            val centroFormacion = LoginActivity.aprendiz.CentroFormacion
+
+            GetVotacion { votacions ->
+                // si la lista está vacía o no
+                if (votacions.isNotEmpty()) {
+                    adapterVotacion.ActulizarVotacion(votacions)
+                } else {
+                    Toast.makeText(this, "No hay votaciones activas disponibles", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        } catch (e: UninitializedPropertyAccessException) {
+            // Si aprendiz no está inicializado y no hemos intentado muchas veces
+            if (intentos < 5) {
+                Handler(Looper.getMainLooper()).postDelayed({
+                    cargarVotaciones(adapterVotacion, intentos + 1)
+                }, 200) // Esperar 200ms y reintentar
             } else {
-                Toast.makeText(this, "No hay votaciones activas disponibles", Toast.LENGTH_SHORT).show()
+                // Si después de varios intentos aún no está inicializado, regresar a login
+                Toast.makeText(this, "Error de sesión. Por favor, inicia sesión nuevamente.", Toast.LENGTH_SHORT).show()
+                regresarALogin()
             }
         }
     }
@@ -76,5 +97,12 @@ class MainActivity : AppCompatActivity() {
         })
 
         client.add(request)
+    }
+
+    private fun regresarALogin() {
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        finish()
     }
 }

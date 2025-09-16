@@ -62,23 +62,10 @@
 
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Gestion Empresarial"
-        app:layout_constraintTop_toBottomOf="@id/llContainerFragment"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginHorizontal="20dp"
-        android:textSize="20dp"
-        android:id="@+id/programaCandidatoFragment"
-        android:textColor="@color/text_color_no_votations_title"
-        android:textStyle="bold"
-        />
-
-    <TextView
         android:layout_width="match_parent"
         android:id="@+id/descripcionCandidatoFragment"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/programaCandidatoFragment"
+        app:layout_constraintTop_toBottomOf="@id/llContainerFragment"
         app:layout_constraintStart_toStartOf="parent"
         android:text="Fomentar el emprendimiento a través de alianzas estratégicas con el sector productivo, buscando que nuestras ideas se conviertan en oportunidades reales de negocio para los aprendices, fortaleciendo el vínculo entre formación y empleo digno, y construyendo un SENA más conectado con las necesidades del territorio."
         android:textSize="18sp"

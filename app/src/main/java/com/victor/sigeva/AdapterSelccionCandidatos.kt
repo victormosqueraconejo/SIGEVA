@@ -40,7 +40,7 @@ class AdapterSelccionCandidatos(var listaCandidatoResponses : List<Candidato>, v
 
     class  ViewHolderCandidatos(view : View) : RecyclerView.ViewHolder(view){
         var nombreCandidato = view.findViewById<TextView>(R.id.nombreItemCandidatos)
-        var programaCandidato = view.findViewById<TextView>(R.id.programaItemCandidato)
+
         var descripcionCandidato = view.findViewById<TextView>(R.id.descripcionItemCandidato)
         var numeroTarjeton = view.findViewById<TextView>(R.id.numeroItemCandidatos)
         var btnVotar = view.findViewById<Button>(R.id.btnVotarCandidatoItemCandidatos)
