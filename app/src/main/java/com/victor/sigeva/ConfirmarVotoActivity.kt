@@ -3,18 +3,14 @@ package com.victor.sigeva
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Log
-import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.flagging.Flags
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.button.MaterialButton
@@ -23,15 +19,15 @@ import org.json.JSONObject
 
 class ConfirmarVotoActivity : AppCompatActivity() {
 
-    lateinit var et1 : EditText
-    lateinit var et2 : EditText
-    lateinit var et3 : EditText
-    lateinit var et4 : EditText
-    lateinit var et5 : EditText
-    lateinit var et6 : EditText
+    lateinit var et1: EditText
+    lateinit var et2: EditText
+    lateinit var et3: EditText
+    lateinit var et4: EditText
+    lateinit var et5: EditText
+    lateinit var et6: EditText
 
-    lateinit var btnConfirmarVoto : MaterialButton
-    lateinit var idEleccionExtra : String
+    lateinit var btnConfirmarVoto: MaterialButton
+    lateinit var idEleccionExtra: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +36,19 @@ class ConfirmarVotoActivity : AppCompatActivity() {
 
         btnConfirmarVoto = findViewById(R.id.btnConfirmarVoto)
 
-        idEleccionExtra = intent.getStringExtra("idEleccion")!!
+        val idEleccionInt = SeleccionCandidatosActivity.idEleccionSeleccionCandidato
+
+        if (idEleccionInt != 0) {
+            idEleccionExtra = String.format("%03d", idEleccionInt)
+        } else {
+            Toast.makeText(
+                this,
+                "Error: No se pudo obtener información de la elección",
+                Toast.LENGTH_SHORT
+            ).show()
+            finish()
+            return
+        }
 
         et1 = findViewById(R.id.et1)
         et2 = findViewById(R.id.et2)
@@ -49,64 +57,123 @@ class ConfirmarVotoActivity : AppCompatActivity() {
         et5 = findViewById(R.id.et5)
         et6 = findViewById(R.id.et6)
 
-        // TODO: Validar Codigo antes de enviar al backend
-
         btnConfirmarVoto.setOnClickListener {
-            EnviarVoto(LoginActivity.aprendiz.id,intent.getIntExtra("idCandidato", 0), formatearVotoStringToInt(idEleccionExtra)) // Todo: Cambir el default value
+            val codigoOtp = et1.text.toString() + et2.text.toString() +
+                    et3.text.toString() + et4.text.toString() +
+                    et5.text.toString() + et6.text.toString()
+
+            if (codigoOtp.length == 6) {
+                validarOtp(codigoOtp)
+            } else {
+                Toast.makeText(
+                    this,
+                    "Debes ingresar los 6 dígitos del código",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
 
-
-
         setupOtpInputs()
-
-
-
     }
-    fun formatearVotoStringToInt(idEleccion : String) : Int{
+
+    fun formatearVotoStringToInt(idEleccion: String): Int {
         return when (idEleccion) {
             "001" -> 1
             "002" -> 2
             "003" -> 3
             "004" -> 4
+            "005" -> 5
+            "006" -> 6
+            "007" -> 7
+            "008" -> 8
+            "009" -> 9
+            "010" -> 10
+            "011" -> 11
+            "012" -> 12
             else -> 0
         }
     }
 
-    fun EnviarVoto(idUsuario: Int, idCandidato: Int, idEleccion: Int) {
+    fun validarOtp(codigoOtp: String) {
+        val url = "https://sigevaback-real.onrender.com/api/validaciones/validarOtp"
 
-        val url = "https://sigevaback-0rj7.onrender.com/api/votoXCandidato/crear/"
+        val datosPost = JSONObject().apply {
+            put("codigo_otp", codigoOtp)
+        }
+
+        val client = Volley.newRequestQueue(this)
+
+        val request = object : JsonObjectRequest(
+            Method.POST, url, datosPost,
+            { response ->
+                try {
+                    val success = response.optBoolean("success", false)
+                    val message = response.optString("message", "Sin mensaje")
+
+                    if (message.contains("validado", ignoreCase = true)) {
+                        EnviarVoto(
+                            LoginActivity.aprendiz.id,
+                            intent.getIntExtra("idCandidato", 0),
+                            formatearVotoStringToInt(idEleccionExtra)
+                        )
+                    } else {
+                        mostrarModal("Error OTP", "Codigo no valido o incompleto")
+                    }
+
+                } catch (e: Exception) {
+                    mostrarModal("Error parsing", e.message ?: "Error desconocido")
+                }
+            }, { error ->
+                val responseBody = error.networkResponse?.data?.let { String(it, Charsets.UTF_8) }
+                Log.e("API OTP", "Error: $responseBody", error)
+                mostrarModal("Error OTP", "Codigo no valido o incompleto")
+            }
+        ) {
+            override fun getHeaders(): MutableMap<String, String> {
+                return hashMapOf("Content-Type" to "application/json")
+            }
+        }
+
+        client.add(request)
+    }
+
+    fun EnviarVoto(idUsuario: Int, idCandidato: Int, idEleccion: Int) {
+        val url = "https://sigevaback-real.onrender.com/api/votoXCandidato/crear/"
 
         val datosPost = JSONObject().apply {
             put("idaprendiz", idUsuario)
             put("idcandidatos", idCandidato)
             put("ideleccion", idEleccion)
             put("contador", 1)
-
         }
 
         val client = Volley.newRequestQueue(this)
         Log.d("API Voto", "Datos enviados: $datosPost")
 
-        val request = object : JsonObjectRequest(Method.POST, url, datosPost,
+        val request = object : JsonObjectRequest(
+            Method.POST, url, datosPost,
             { response ->
+                val i = Intent(this, VotoExitosoActivity::class.java).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
                 try {
                     val gson = Gson()
                     val data = gson.fromJson(response.toString(), VotoAPI::class.java)
 
-                    val i = Intent(this, VotoExitosoActivity::class.java).apply {
-                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                    }
                     if (data.message.contains("exitosamente", ignoreCase = true)) {
                         // Caso de éxito → ir a pantalla de confirmación
                         startActivity(i)
+                    } else if (data.message.contains("ya realizaste", ignoreCase = true)) {
+                        // ✅ Caso de voto repetido → mostrar modal (no redirigir directo)
+                        mostrarModal("Voto duplicado", data.message)
                     } else {
-                        // Caso de error → mostrar modal con mensaje del servidor
                         mostrarModal("Error al votar", data.message)
                     }
+
                 } catch (e: Exception) {
-                    mostrarModal("Error parsing", e.message ?: "Error desconocido")
+                    startActivity(i)
                 }
-            },{ error ->
+            }, { error ->
                 val statusCode = error.networkResponse?.statusCode
                 val responseBody = error.networkResponse?.data?.let { String(it, Charsets.UTF_8) }
 
@@ -120,9 +187,7 @@ class ConfirmarVotoActivity : AppCompatActivity() {
                     mostrarModal("Error Petición", responseBody ?: "Error desconocido")
                 }
             }
-
         ) {
-
             override fun getHeaders(): MutableMap<String, String> {
                 return hashMapOf("Content-Type" to "application/json")
             }
@@ -132,34 +197,65 @@ class ConfirmarVotoActivity : AppCompatActivity() {
     }
 
     fun mostrarModal(titulo: String, mensaje: String) {
-        AlertDialog.Builder(this)
-            .setTitle(titulo)
-            .setMessage(mensaje)
-            .setPositiveButton("Reintenter") { dialog, _ ->
-                EnviarVoto(LoginActivity.aprendiz.id,intent.getIntExtra("idCandidato", 0), formatearVotoStringToInt(idEleccionExtra)) // Todo: Cambir el default value
-                dialog.dismiss() }
-            .setNegativeButton("Cancelar") { dialog, which ->
-                dialog.dismiss()
+        runOnUiThread {
+            val builder = AlertDialog.Builder(this)
+                .setTitle(titulo)
+                .setMessage(mensaje)
+                .setCancelable(false)
+
+            if (mensaje.contains("ya realizaste", ignoreCase = true)) {
+                builder.setPositiveButton("Aceptar") { dialog, _ ->
+                    val intent = Intent(this, MainActivity::class.java).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
+                    startActivity(intent)
+                    dialog.dismiss()
+                    finish()
+                }
+            } else {
+                builder.setPositiveButton("Reintentar") { dialog, _ ->
+                    val codigoOtp = et1.text.toString() + et2.text.toString() +
+                            et3.text.toString() + et4.text.toString() +
+                            et5.text.toString() + et6.text.toString()
+                    if (codigoOtp.length == 6) validarOtp(codigoOtp)
+                    dialog.dismiss()
+                }
+                builder.setNegativeButton("Cancelar") { dialog, _ ->
+                    dialog.dismiss()
+                }
             }
-            .show()
+
+            builder.show()
+        }
     }
 
-
-    fun setupOtpInputs() {
+    private fun setupOtpInputs() {
         val editTexts = listOf(et1, et2, et3, et4, et5, et6)
 
         for (i in editTexts.indices) {
-            editTexts[i].addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable?) {
-                    if (s?.length == 1 && i < editTexts.size - 1) {
-                        editTexts[i + 1].requestFocus()
-                    } else if (s?.isEmpty() == true && i > 0) {
-                        editTexts[i - 1].requestFocus()
-                    }
-                }
+            val editText = editTexts[i]
+            editText.filters = arrayOf(InputFilter.LengthFilter(1))
 
+            editText.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+                override fun afterTextChanged(s: Editable?) {
+                    if (!s.isNullOrEmpty()) {
+                        val upperChar = s.toString().uppercase()
+                        if (s.toString() != upperChar) {
+                            editText.setText(upperChar)
+                            editText.setSelection(1)
+                        }
+                        if (i < editTexts.size - 1) {
+                            editTexts[i + 1].requestFocus()
+                        }
+                    } else {
+                        if (i > 0) {
+                            editTexts[i - 1].requestFocus()
+                        }
+                    }
+                }
             })
         }
     }

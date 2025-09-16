@@ -1,11 +1,12 @@
 package com.victor.sigeva
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
@@ -15,6 +16,7 @@ import com.google.gson.Gson
 
 class SeleccionCandidatosActivity : AppCompatActivity() {
     lateinit var recyclerViewCandidatos: RecyclerView
+    private lateinit var cardNoCandidatos : CardView
     lateinit var adapterCandidatos : AdapterSelccionCandidatos
 
     // Lista inicial
@@ -26,12 +28,14 @@ class SeleccionCandidatosActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_seleccion_candidatos)
 
+        cardNoCandidatos = findViewById(R.id.cardNoCandidatos)
         var btnBack = findViewById<ImageView>(R.id.btnArrowBack)
         btnBack.setOnClickListener {
             finish()
         }
 
         idEleccionExtra = intent.getIntExtra("idEleccion",0)
+        idEleccionSeleccionCandidato = idEleccionExtra!! // TODO
 
 
         recyclerViewCandidatos = findViewById(R.id.recyclerViewSeleccionCandidato)
@@ -48,27 +52,52 @@ class SeleccionCandidatosActivity : AppCompatActivity() {
     }
 
     fun GetCandidatos() {
-        val url = "https://sigevaback-0rj7.onrender.com/api/candidatos/listar/$idEleccionExtra"
+        val url = "https://sigevaback-real.onrender.com/api/candidatos/listar/$idEleccionExtra"
         val client = Volley.newRequestQueue(this)
 
         val request = StringRequest(Request.Method.GET, url,
             { response ->
-                val gson = Gson()
-                val data = gson.fromJson(response, CandidatoAPI::class.java)
+                try {
+                    val gson = Gson()
+                    val data = gson.fromJson(response, CandidatoAPIListar::class.java)
 
+                    if (!data.data.isNullOrEmpty()) {
+                        lista.clear()
+                        data.data.forEach { candidato ->
+                            lista.add(
+                                Candidato(
+                                    idcandidatos = candidato.idcandidatos,
+                                    nombres = "${candidato.aprendiz.nombres} ${candidato.aprendiz.apellidos}",
+                                    numeroTarjeton = candidato.numeroTarjeton,
+                                    propuesta = candidato.propuesta,
+                                    centroFormacion = candidato.aprendiz.centro_formacion.centroFormacioncol,
+                                    foto = candidato.foto
+                                )
+                            )
 
-                if (data != null && data.data != null && data.data.isNotEmpty()) {
-                    lista.clear()
-                    lista = data.data as MutableList<Candidato>
-                    adapterCandidatos.ActulizarAdapter(lista)
-                } else {
-                    Toast.makeText(this, "No hay candidatos disponibles para esta elección.", Toast.LENGTH_SHORT).show()
+                        }
+                        cardNoCandidatos.isVisible = false
+                        adapterCandidatos.ActulizarAdapter(lista)
+                    } else {
+
+                        Toast.makeText(this, "No hay candidatos disponibles para esta elección.", Toast.LENGTH_SHORT).show()
+                        cardNoCandidatos.isVisible = true
+                    }
+                } catch (e: Exception) {
+                    Toast.makeText(this, "Error parseando candidatos: ${e.message}", Toast.LENGTH_SHORT).show()
+                    cardNoCandidatos.isVisible = true
                 }
-
-            }, { error ->
+            },
+            { error ->
                 Toast.makeText(this, "Error al cargar candidatos: ${error.message}", Toast.LENGTH_SHORT).show()
             })
 
         client.add(request)
     }
+
+
+    companion object {
+        var idEleccionSeleccionCandidato : Int = 0
+    }
+
 }

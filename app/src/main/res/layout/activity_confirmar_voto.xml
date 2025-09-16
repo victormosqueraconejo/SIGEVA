@@ -26,6 +26,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:text="@string/title_Confirmacion"
+            android:textColor="@color/text_color_no_votations_title"
             android:textStyle="bold"
             android:textSize="24sp"
             android:layout_marginTop="150dp"
@@ -36,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/description_confirmacion"
+            android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@+id/titleConfirmar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -60,11 +62,16 @@
                 android:layout_width="40dp"
                 android:layout_height="50dp"
                 android:maxLength="1"
+
                 android:id="@+id/et1"
                 android:hint="X"
+                android:textColor="@color/black"
                 android:gravity="center"
-                android:inputType="number"
+                android:textAllCaps="true"
                 android:layout_margin="1dp"
+                android:inputType="textVisiblePassword"
+                android:imeOptions="actionNext"
+
                 />
 
 
@@ -74,9 +81,13 @@
                 android:id="@+id/et2"
                 android:maxLength="1"
                 android:hint="X"
+                android:textColor="@color/black"
                 android:gravity="center"
-                android:inputType="number"
+                android:textAllCaps="true"
                 android:layout_margin="1dp"
+                android:inputType="textVisiblePassword"
+                android:imeOptions="actionNext"
+
                 />
 
 
@@ -85,10 +96,14 @@
                 android:layout_height="50dp"
                 android:maxLength="1"
                 android:hint="X"
+                android:textColor="@color/black"
                 android:gravity="center"
                 android:id="@+id/et3"
-                android:inputType="number"
+                android:textAllCaps="true"
                 android:layout_margin="1dp"
+                android:inputType="textVisiblePassword"
+                android:imeOptions="actionNext"
+
                 />
 
 
@@ -97,10 +112,14 @@
                 android:layout_height="50dp"
                 android:maxLength="1"
                 android:hint="X"
+                android:textColor="@color/black"
                 android:gravity="center"
-                android:inputType="number"
+                android:textAllCaps="true"
                 android:id="@+id/et4"
                 android:layout_margin="1dp"
+                android:inputType="textVisiblePassword"
+                android:imeOptions="actionNext"
+
                 />
 
             <EditText
@@ -108,10 +127,14 @@
                 android:layout_height="50dp"
                 android:maxLength="1"
                 android:hint="X"
+                android:textColor="@color/black"
                 android:gravity="center"
                 android:id="@+id/et5"
-                android:inputType="number"
+                android:textAllCaps="true"
                 android:layout_margin="1dp"
+                android:inputType="textVisiblePassword"
+                android:imeOptions="actionNext"
+
                 />
 
             <EditText
@@ -119,9 +142,12 @@
                 android:layout_height="50dp"
                 android:maxLength="1"
                 android:hint="X"
+                android:textColor="@color/black"
                 android:gravity="center"
                 android:id="@+id/et6"
-                android:inputType="number"
+                android:inputType="textVisiblePassword"
+                android:imeOptions="actionNext"
+
                 android:layout_margin="1dp"
                 />
 
@@ -135,6 +161,7 @@
             android:background="@drawable/background_button_radius"
             app:layout_constraintTop_toBottomOf="@+id/layoutEdtx"
             android:text="@string/btnConfirm"
+            android:textColor="@color/white"
             app:backgroundTint="@color/button_background_tint"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

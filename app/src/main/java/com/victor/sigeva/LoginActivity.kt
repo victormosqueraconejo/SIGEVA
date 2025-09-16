@@ -16,6 +16,7 @@ import com.google.gson.Gson
 import org.json.JSONObject
 
 
+
 class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
 
     // Me retorna unicamente la informacion de usuario
     fun GetInformacionAprendiz(nombreCuenta : String, password : String, ValidarRespuesta : (AprendizAPI) -> Unit) {
-        val url = "https://sigevaback-0rj7.onrender.com/api/aprendiz/login/"
+        val url = "https://sigevaback-real.onrender.com/api/aprendiz/login/"
         val client = Volley.newRequestQueue(this)
 
         val parametros = JSONObject()
@@ -56,16 +57,19 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun ValidarRespuesta(data : AprendizAPI) {
-        if (data != null) {
-            if (data.message == "Autenticado") {
-                Toast.makeText(this, "Autenticado con éxito.", Toast.LENGTH_SHORT).show()
-                aprendiz = data.data
-                startActivity(Intent(this, MainActivity::class.java))
-            } else {
-                mostrarModal("Error de autenticación", "Correo o contraseña incorrectos.")
-            }
+        if (data.message == "Autenticado") {
+            Toast.makeText(this, "Autenticado con éxito.", Toast.LENGTH_SHORT).show()
+
+            // CORRECCIÓN: Inicializar aprendiz ANTES de cambiar de actividad
+            aprendiz = Aprendiz(data.data.id, data.data.nombre, data.data.apellidos, data.data.estado, data.data.perfil, data.data.jornada, data.data.CentroFormacion)
+            Log.d("Aprendiz" , aprendiz.toString())
+
+            // CORRECCIÓN: Mover startActivity DESPUÉS de inicializar aprendiz
+            startActivity(Intent(this, MainActivity::class.java))
+            finish() // Opcional: para que no se pueda volver a LoginActivity con el botón atrás
+
         } else {
-            mostrarModal("Error", "Ocurrió un problema al procesar la respuesta.")
+            mostrarModal("Error de autenticación", "Correo o contraseña incorrectos.")
         }
     }
 
