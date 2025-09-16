@@ -4,11 +4,6 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 
-
-// TODO: Cambiar los modelso de acuerdo a lo que me devuelva la API
-
-// Modelos Respuestas API
-
 data class AprendizAPI(
     var message : String,
     var data : Aprendiz
@@ -17,11 +12,6 @@ data class AprendizAPI(
 data class VotacionesAPI(
     var message: String,
     var eleccionesActivas : List<Votacion>
-)
-
-data class CandidatoAPI(
-    var message: String,
-    var data : List<Candidato>
 )
 
 
@@ -46,18 +36,6 @@ data class Aprendiz(
 ) : Parcelable
 
 
-
-
-
-data class CandidatoAPIAprendiz (
-    var idaprendiz : Int,
-    var nombres : String,
-    var apellidos : String,
-    var numeroTarjeton: String,
-    var propuesta: String,
-    var centro_formacion : CentroFormacion
-)
-
 data class CentroFormacion (
     var centroFormacioncol : String
 )
@@ -69,7 +47,8 @@ data class Candidato(
     var numeroTarjeton: String,
     //var propuesa: String,
     var propuesta: String,
-    var centroFormacion : String
+    var centroFormacion : String,
+    var foto : String
 
 ) : Parcelable
 
@@ -127,5 +106,11 @@ data class CentroFormacionResponse(
     val correosubdirector: String,
     val createdAt: String,
     val updatedAt: String
+)
+
+
+data class GenerarOTPAPI(
+    var message: String,
+    var codigo_error : String
 )
 

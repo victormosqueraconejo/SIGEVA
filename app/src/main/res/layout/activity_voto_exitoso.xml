@@ -34,6 +34,7 @@
             android:layout_height="wrap_content"
             android:text="@string/textExito"
             android:textStyle="bold"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ic_rxito_lsyuot"
             android:gravity="center"
@@ -47,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/textExito"
-
+            app:textColor="@color/white"
             app:backgroundTint="@color/button_background_tint"
             android:background="@drawable/background_button_radius"
             android:text="@string/btnHome"

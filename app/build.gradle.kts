@@ -48,6 +48,8 @@ dependencies {
     implementation("com.google.code.gson:gson:2.13.1")
 
     implementation(libs.androidx.constraintlayout)
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+
 
     // Volley para hacer las peticiones de la API
     implementation("com.android.volley:volley:1.2.1")

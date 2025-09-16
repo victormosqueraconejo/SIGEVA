@@ -23,7 +23,7 @@ class AdapterVotacionesActivas(var listaVotaciones : List<Votacion>, var onClick
     ) {
         var item = listaVotaciones[position]
         holder.title.text = item.titulo
-        //holder.jornada.text = item.jornada
+        holder.jornada.text = item.jornada ?: "Sin jornada"
         //holder.centro.text = item.centro
         holder.boton.setOnClickListener {
             onClickButotn(item)
