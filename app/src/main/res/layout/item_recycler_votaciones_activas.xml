@@ -30,6 +30,7 @@
 
         android:layout_height="wrap_content"
         android:text="Regional: Antioquia"
+        android:textColor="@color/text_color_no_votations_title"
         style="@style/title_item_votation"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/ic_votation_layout"
@@ -43,6 +44,7 @@
         android:singleLine="true"
         android:layout_height="wrap_content"
         android:id="@+id/centroItemVotation"
+        android:textColor="@color/black"
         style="@style/description_item_votation"
         app:layout_constraintStart_toEndOf="@id/ic_votation_layout"
         android:text="Centro de Servicios y Gestión Empresarial"
@@ -56,6 +58,7 @@
         style="@style/description_item_votation"
         app:layout_constraintStart_toEndOf="@id/ic_votation_layout"
         android:text="Mañana"
+        android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@id/centroItemVotation"
 
         />
@@ -66,6 +69,7 @@
         android:id="@+id/btnParctiparVotaciones"
         android:layout_height="wrap_content"
         android:text="@string/button_text_partcipar"
+        android:textColor="@color/white"
         app:icon="@drawable/ic_touch_24"
         app:layout_constraintStart_toEndOf="@id/ic_votation_layout"
         app:layout_constraintTop_toBottomOf="@id/jornadaItemVotation"
