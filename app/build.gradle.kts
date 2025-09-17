@@ -49,7 +49,7 @@ dependencies {
 
     implementation(libs.androidx.constraintlayout)
     implementation("com.github.bumptech.glide:glide:4.16.0")
-
+    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.4.0-alpha05")
 
     // Volley para hacer las peticiones de la API
     implementation("com.android.volley:volley:1.2.1")
@@ -57,4 +57,5 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation(kotlin("test"))
 }
