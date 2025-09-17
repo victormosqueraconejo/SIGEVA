@@ -14,7 +14,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import org.json.JSONObject
-
+import java.util.Locale
 
 
 class LoginActivity : AppCompatActivity() {
@@ -46,7 +46,11 @@ class LoginActivity : AppCompatActivity() {
         val request = JsonObjectRequest(Request.Method.POST, url, parametros, { response ->
             val gson = Gson()
             val data = gson.fromJson(response.toString(), AprendizAPI::class.java)
-            ValidarRespuesta(data)
+            if (data.data.estado.lowercase() == "en formacion" || data.data.estado.lowercase() == "activo") {
+                ValidarRespuesta(data)
+            } else {
+                Toast.makeText(this, "Aprendiz no activo", Toast.LENGTH_SHORT).show()
+            }
 
         }, { error ->
             Log.d("API", error.toString())
