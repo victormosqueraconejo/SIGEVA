@@ -54,6 +54,11 @@
 
     </style>
 
+    <style name="ic_participation_style">
+        <item name="android:layout_width">35dp</item>
+        <item name="android:layout_height">35dp</item>
+        <item name="tint">@color/white</item>
+    </style>
 
     
 

@@ -158,6 +158,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:icon="@drawable/ic_votation_24"
+            app:iconTint="@color/white"
             android:background="@drawable/background_button_radius"
             app:layout_constraintTop_toBottomOf="@+id/layoutEdtx"
             android:text="@string/btnConfirm"
