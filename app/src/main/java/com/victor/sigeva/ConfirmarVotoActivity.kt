@@ -106,7 +106,6 @@ class ConfirmarVotoActivity : AppCompatActivity() {
         val request = object : JsonObjectRequest(
             Method.POST, url, datosPost,
             { response ->
-                try {
                     val success = response.optBoolean("success", false)
                     val message = response.optString("message", "Sin mensaje")
 
@@ -117,16 +116,22 @@ class ConfirmarVotoActivity : AppCompatActivity() {
                             formatearVotoStringToInt(idEleccionExtra)
                         )
                     } else {
-                        mostrarModal("Error OTP", "Codigo no valido o incompleto")
+                        ControllerModales.MostrarModalGeneral(this,
+                            "Código Incorrecto",
+                            "El código que ingresaste no es válido o ha expirado.",
+                            R.drawable.codigo_incorrecto) {
+                        }
                     }
 
-                } catch (e: Exception) {
-                    mostrarModal("Error parsing", e.message ?: "Error desconocido")
-                }
+
             }, { error ->
                 val responseBody = error.networkResponse?.data?.let { String(it, Charsets.UTF_8) }
                 Log.e("API OTP", "Error: $responseBody", error)
-                mostrarModal("Error OTP", "Codigo no valido o incompleto")
+                ControllerModales.MostrarModalGeneral(this,
+                    "Código Incorrecto",
+                    "El código que ingresaste no es válido o ha expirado.",
+                    R.drawable.codigo_incorrecto) {
+                }
             }
         ) {
             override fun getHeaders(): MutableMap<String, String> {
@@ -156,23 +161,36 @@ class ConfirmarVotoActivity : AppCompatActivity() {
                 val i = Intent(this, VotoExitosoActivity::class.java).apply {
                     addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
-                try {
                     val gson = Gson()
                     val data = gson.fromJson(response.toString(), VotoAPI::class.java)
 
                     if (data.message.contains("exitosamente", ignoreCase = true)) {
-                        // Caso de éxito → ir a pantalla de confirmación
                         startActivity(i)
                     } else if (data.message.contains("ya realizaste", ignoreCase = true)) {
-                        // ✅ Caso de voto repetido → mostrar modal (no redirigir directo)
-                        mostrarModal("Voto duplicado", data.message)
+
+                        ControllerModales.MostrarModalGeneral(this,
+                            "Voto Duplicado",
+                            "Nuestro sistema detecta que ya emitiste tu voto en esta elección. No es posible registrar un nuevo voto.",
+                            R.drawable.voto_duplicado) {
+                            val intent = Intent(this, MainActivity::class.java).apply {
+                                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                            }
+                            startActivity(intent)
+                            finish()
+                        }
                     } else {
-                        mostrarModal("Error al votar", data.message)
+                        ControllerModales.MostrarModalGeneral(this,
+                            "Error en el Servidor",
+                            "Ocurrió un problema al procesar tu solicitud. Puede deberse a una falla temporal en el servidor.",
+                            R.drawable.error_servidor) {
+                            val codigoOtp = et1.text.toString() + et2.text.toString() +
+                                    et3.text.toString() + et4.text.toString() +
+                                    et5.text.toString() + et6.text.toString()
+                            if (codigoOtp.length == 6) validarOtp(codigoOtp)
+                        }
                     }
 
-                } catch (e: Exception) {
-                    startActivity(i)
-                }
+
             }, { error ->
                 val statusCode = error.networkResponse?.statusCode
                 val responseBody = error.networkResponse?.data?.let { String(it, Charsets.UTF_8) }
@@ -182,9 +200,25 @@ class ConfirmarVotoActivity : AppCompatActivity() {
                 try {
                     val gson = Gson()
                     val data = gson.fromJson(responseBody, VotoAPI::class.java)
-                    mostrarModal("Error Petición", data.message)
+                    ControllerModales.MostrarModalGeneral(this,
+                        "Error en el Servidor",
+                        "Ocurrió un problema al procesar tu solicitud. Puede deberse a una falla temporal en el servidor.",
+                        R.drawable.error_servidor) {
+                        val codigoOtp = et1.text.toString() + et2.text.toString() +
+                                et3.text.toString() + et4.text.toString() +
+                                et5.text.toString() + et6.text.toString()
+                        if (codigoOtp.length == 6) validarOtp(codigoOtp)
+                    }
                 } catch (e: Exception) {
-                    mostrarModal("Error Petición", responseBody ?: "Error desconocido")
+                    ControllerModales.MostrarModalGeneral(this,
+                        "Error en la Peticion",
+                        "No se pudo completar la solicitud (GET/POST). Puede deberse a un problema de conexión o a un error en el servidor.",
+                        R.drawable.error_peticion) {
+                        val codigoOtp = et1.text.toString() + et2.text.toString() +
+                                et3.text.toString() + et4.text.toString() +
+                                et5.text.toString() + et6.text.toString()
+                        if (codigoOtp.length == 6) validarOtp(codigoOtp)
+                    }
                 }
             }
         ) {
@@ -195,39 +229,39 @@ class ConfirmarVotoActivity : AppCompatActivity() {
 
         client.add(request)
     }
-
-    fun mostrarModal(titulo: String, mensaje: String) {
-        runOnUiThread {
-            val builder = AlertDialog.Builder(this)
-                .setTitle(titulo)
-                .setMessage(mensaje)
-                .setCancelable(false)
-
-            if (mensaje.contains("ya realizaste", ignoreCase = true)) {
-                builder.setPositiveButton("Aceptar") { dialog, _ ->
-                    val intent = Intent(this, MainActivity::class.java).apply {
-                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                    }
-                    startActivity(intent)
-                    dialog.dismiss()
-                    finish()
-                }
-            } else {
-                builder.setPositiveButton("Reintentar") { dialog, _ ->
-                    val codigoOtp = et1.text.toString() + et2.text.toString() +
-                            et3.text.toString() + et4.text.toString() +
-                            et5.text.toString() + et6.text.toString()
-                    if (codigoOtp.length == 6) validarOtp(codigoOtp)
-                    dialog.dismiss()
-                }
-                builder.setNegativeButton("Cancelar") { dialog, _ ->
-                    dialog.dismiss()
-                }
-            }
-
-            builder.show()
-        }
-    }
+//
+//    fun mostrarModal(titulo: String, mensaje: String) {
+//        runOnUiThread {
+//            val builder = AlertDialog.Builder(this)
+//                .setTitle(titulo)
+//                .setMessage(mensaje)
+//                .setCancelable(false)
+//
+//            if (mensaje.contains("ya realizaste", ignoreCase = true)) {
+//                builder.setPositiveButton("Aceptar") { dialog, _ ->
+//                    val intent = Intent(this, MainActivity::class.java).apply {
+//                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+//                    }
+//                    startActivity(intent)
+//                    dialog.dismiss()
+//                    finish()
+//                }
+//            } else {
+//                builder.setPositiveButton("Reintentar") { dialog, _ ->
+//                    val codigoOtp = et1.text.toString() + et2.text.toString() +
+//                            et3.text.toString() + et4.text.toString() +
+//                            et5.text.toString() + et6.text.toString()
+//                    if (codigoOtp.length == 6) validarOtp(codigoOtp)
+//                    dialog.dismiss()
+//                }
+//                builder.setNegativeButton("Cancelar") { dialog, _ ->
+//                    dialog.dismiss()
+//                }
+//            }
+//
+//            builder.show()
+//        }
+//    }
 
     private fun setupOtpInputs() {
         val editTexts = listOf(et1, et2, et3, et4, et5, et6)

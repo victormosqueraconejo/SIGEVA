@@ -1,8 +1,10 @@
 package com.victor.sigeva
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.EditText
@@ -54,7 +56,7 @@ class LoginActivity : AppCompatActivity() {
 
         }, { error ->
             Log.d("API", error.toString())
-            mostrarModal("Error", "No se pudo conectar con el servidor. Inténtalo de nuevo.")
+            mostrarModal()
         })
 
         client.add(request)
@@ -73,17 +75,24 @@ class LoginActivity : AppCompatActivity() {
             finish() // Opcional: para que no se pueda volver a LoginActivity con el botón atrás
 
         } else {
-            mostrarModal("Error de autenticación", "Correo o contraseña incorrectos.")
+            mostrarModal()
         }
     }
 
     // Modal
-    fun mostrarModal(titulo: String, mensaje: String) {
-        AlertDialog.Builder(this)
-            .setTitle(titulo)
-            .setMessage(mensaje)
-            .setPositiveButton("Aceptar") { dialog, _ -> dialog.dismiss() }
-            .show()
+    fun mostrarModal() {
+        var dialogView = LayoutInflater.from(this).inflate(R.layout.alert_dialog_login, null)
+
+        var botonAceparModal = dialogView.findViewById<Button>(R.id.btnModalAceptar)
+        var dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+        botonAceparModal.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+
+
     }
 
     companion object {
