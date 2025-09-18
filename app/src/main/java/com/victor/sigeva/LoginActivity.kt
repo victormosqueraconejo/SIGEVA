@@ -49,6 +49,7 @@ class LoginActivity : AppCompatActivity() {
             val gson = Gson()
             val data = gson.fromJson(response.toString(), AprendizAPI::class.java)
             if (data.data.estado.lowercase() == "en formacion" || data.data.estado.lowercase() == "activo") {
+                Toast.makeText(this, "Cargando...", Toast.LENGTH_SHORT).show()
                 ValidarRespuesta(data)
             } else {
                 Toast.makeText(this, "Aprendiz no activo", Toast.LENGTH_SHORT).show()

@@ -13,7 +13,7 @@
     <string name="no_candidates_actives_title">En este momento no hay candidatos para esta eleccion.</string>
     <string name="no_votation_actives_subtitle">Por favor, vuelve a intentarlo más tarde.</string>
     <string name="descripcion_ampliada">Ver descripción ampliada</string>
-    <string name="votar_candidatp">Votar por este candidatoResponse</string>
+    <string name="votar_candidatp">Votar por este candidato</string>
 
 
     //Confirmacion de Votos
