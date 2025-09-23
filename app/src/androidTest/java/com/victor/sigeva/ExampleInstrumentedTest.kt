@@ -102,9 +102,45 @@ class ChangeTextBehaviorTest2 {
 
     }
 
+    // TODO: Completar en una votacion en la que no se haya votado
     @Test
     fun VotarPorElPrimerCandidato() {
         AccederACandidatosDeLaPrimeraEleccion()
+
+        Thread.sleep(5000)
+
+        var recyclerCandidatos = Find("recyclerViewSeleccionCandidato")
+        var item = recyclerCandidatos.children.first()
+        var botonVotatCandidato = item.wait(Until.findObject(By.res(id("recyclerViewSeleccionCandidato"))),5000)
+        botonVotatCandidato.click()
+
+
+
+
+    }
+
+
+    @Test
+    fun VotarEnVotacionYaVotada(){
+
+        AccederACandidatosDeLaPrimeraEleccion()
+
+        var items = device.wait(Until.findObjects(By.text("Votar por este candidato")), 5000)
+
+        items.first().click()
+
+        device.pressHome()
+
+        device.swipe(100,200,100,250,1)
+
+        device.findObject(By.text("Gmail")).click()
+
+
+        Thread.sleep(5000)
+
+        // Logica para obetener el codigo
+
+        device.launcherPackageName
 
 
 

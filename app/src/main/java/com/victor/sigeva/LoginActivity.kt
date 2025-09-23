@@ -2,12 +2,15 @@ package com.victor.sigeva
 
 import android.app.Dialog
 import android.content.Intent
+import android.graphics.Paint
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 
@@ -28,6 +31,16 @@ class LoginActivity : AppCompatActivity() {
         val email = findViewById<EditText>(R.id.input_email)
         val password = findViewById<EditText>(R.id.input_password)
         val btnLogin = findViewById<Button>(R.id.btn_login)
+        val tvLink = findViewById<TextView>(R.id.acercaNosotrosLogin)
+
+
+        tvLink.paintFlags = tvLink.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+
+        tvLink.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com"))
+            startActivity(intent)
+        }
+
 
         btnLogin.setOnClickListener {
             GetInformacionAprendiz(email.text.toString(), password.text.toString()) { data ->
@@ -36,7 +49,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    // Me retorna unicamente la informacion de usuario
+
     fun GetInformacionAprendiz(nombreCuenta : String, password : String, ValidarRespuesta : (AprendizAPI) -> Unit) {
         val url = "https://sigevaback-real.onrender.com/api/aprendiz/login/"
         val client = Volley.newRequestQueue(this)

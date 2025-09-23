@@ -124,4 +124,19 @@
                 android:layout_marginTop="24dp"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="About us"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:id="@+id/acercaNosotrosLogin"
+        android:layout_marginBottom="35dp"
+        />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
