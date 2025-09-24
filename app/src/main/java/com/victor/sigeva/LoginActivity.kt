@@ -61,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
         val request = JsonObjectRequest(Request.Method.POST, url, parametros, { response ->
             val gson = Gson()
             val data = gson.fromJson(response.toString(), AprendizAPI::class.java)
-            if (data.data.estado.lowercase() == "en formacion" || data.data.estado.lowercase() == "activo") {
+            if (data.data.estado.lowercase() == "en formacion" || data.data.estado.lowercase() == "activo" || data.data.estado.lowercase() == "condicionado") {
                 Toast.makeText(this, "Cargando...", Toast.LENGTH_SHORT).show()
                 ValidarRespuesta(data)
             } else {
