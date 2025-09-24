@@ -12,11 +12,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import org.json.JSONObject
 import java.util.Locale
@@ -26,10 +28,12 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(R.layout.activity_login)
 
-        val email = findViewById<EditText>(R.id.input_email)
-        val password = findViewById<EditText>(R.id.input_password)
+
+        val email = findViewById<TextInputEditText>(R.id.input_email)
+        val password = findViewById<TextInputEditText>(R.id.input_password)
         val btnLogin = findViewById<Button>(R.id.btn_login)
         val tvLink = findViewById<TextView>(R.id.acercaNosotrosLogin)
 
@@ -86,7 +90,7 @@ class LoginActivity : AppCompatActivity() {
 
             // CORRECCIÓN: Mover startActivity DESPUÉS de inicializar aprendiz
             startActivity(Intent(this, MainActivity::class.java))
-            finish() // Opcional: para que no se pueda volver a LoginActivity con el botón atrás
+            finish()
 
         } else {
             mostrarModal()

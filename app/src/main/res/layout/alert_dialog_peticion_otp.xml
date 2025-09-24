@@ -11,7 +11,7 @@
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/wrong_icon_modal"
+        android:src="@drawable/error_servidor"
         android:layout_gravity="center"
         android:layout_marginTop="15dp"
         />
@@ -19,7 +19,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Contraseña Incorrecta"
+        android:text="Error en el Servidor"
         android:textColor="@color/black"
         android:layout_marginHorizontal="10dp"
         android:textAlignment="center"
@@ -31,7 +31,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="La contraseña que ingresaste no es válida. Por favor, inténtalo de nuevo."
+        android:text="Ocurrió un problema al procesar tu solicitud. Puede deberse a una falla temporal en el servidor."
         android:textSize="18sp"
         android:textAlignment="center"
         android:textColor="@color/black"
@@ -48,7 +48,7 @@
         android:background="@drawable/background_modal"
         app:backgroundTint="@color/secondary_color"
         android:layout_marginVertical="10dp"
-        android:id="@+id/btnModalAceptar"
+        android:id="@+id/btnModalAceptarOTPError"
         android:layout_marginHorizontal="15dp"
         />
 
