@@ -84,7 +84,7 @@
                 android:textStyle="bold"
                 android:layout_marginTop="15dp"
 
-                android:drawableEnd="@drawable/ic_arrow_forward"
+                android:drawableEnd="@drawable/down_arrow_downward_24"
                 android:drawableTint="@color/secondary_color"
                 />
 

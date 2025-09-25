@@ -90,6 +90,7 @@ class SeleccionCandidatosActivity : AppCompatActivity() {
             },
             { error ->
                 Toast.makeText(this, "Error al cargar candidatos: ${error.message}", Toast.LENGTH_SHORT).show()
+                cardNoCandidatos.isVisible = true
             })
 
         client.add(request)

@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -49,6 +50,20 @@ class ConfirmarVotoActivity : AppCompatActivity() {
             finish()
             return
         }
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                ControllerModales.MostrarModalGeneral(
+                    context = this@ConfirmarVotoActivity, title = "¿Salir de la apliacion?",
+                    description = "Si queires salir de la aplicacion, presiona aceptar o para continuar presionar cancelar.",
+                    imagen = R.drawable.ic_exit_to_app_24
+                )
+                {
+                    finishAffinity()
+                }
+
+            }
+        })
 
         et1 = findViewById(R.id.et1)
         et2 = findViewById(R.id.et2)
@@ -229,39 +244,6 @@ class ConfirmarVotoActivity : AppCompatActivity() {
 
         client.add(request)
     }
-//
-//    fun mostrarModal(titulo: String, mensaje: String) {
-//        runOnUiThread {
-//            val builder = AlertDialog.Builder(this)
-//                .setTitle(titulo)
-//                .setMessage(mensaje)
-//                .setCancelable(false)
-//
-//            if (mensaje.contains("ya realizaste", ignoreCase = true)) {
-//                builder.setPositiveButton("Aceptar") { dialog, _ ->
-//                    val intent = Intent(this, MainActivity::class.java).apply {
-//                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-//                    }
-//                    startActivity(intent)
-//                    dialog.dismiss()
-//                    finish()
-//                }
-//            } else {
-//                builder.setPositiveButton("Reintentar") { dialog, _ ->
-//                    val codigoOtp = et1.text.toString() + et2.text.toString() +
-//                            et3.text.toString() + et4.text.toString() +
-//                            et5.text.toString() + et6.text.toString()
-//                    if (codigoOtp.length == 6) validarOtp(codigoOtp)
-//                    dialog.dismiss()
-//                }
-//                builder.setNegativeButton("Cancelar") { dialog, _ ->
-//                    dialog.dismiss()
-//                }
-//            }
-//
-//            builder.show()
-//        }
-//    }
 
     private fun setupOtpInputs() {
         val editTexts = listOf(et1, et2, et3, et4, et5, et6)
@@ -292,5 +274,7 @@ class ConfirmarVotoActivity : AppCompatActivity() {
                 }
             })
         }
+
+
     }
 }

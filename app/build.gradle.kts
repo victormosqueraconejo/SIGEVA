@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation("com.github.bumptech.glide:glide:4.16.0")
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.4.0-alpha05")
+    implementation("com.android.support.test:rules:1.0.2")
 
     // Volley para hacer las peticiones de la API
     implementation("com.android.volley:volley:1.2.1")

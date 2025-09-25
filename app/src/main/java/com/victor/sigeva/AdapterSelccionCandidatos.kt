@@ -27,7 +27,7 @@ class AdapterSelccionCandidatos(var listaCandidatoResponses : List<Candidato>, v
         holder.nombreCandidato.text = item.nombres
         //holder.programaCandidato.text = LoginActivity.aprendiz.
         holder.descripcionCandidato.text = item.propuesta
-        holder.numeroTarjeton.text = "00${item.numeroTarjeton}"
+        holder.numeroTarjeton.text = "${item.numeroTarjeton}"
         Glide.with(holder.imagenCandidato.context).load(item.foto).error(R.drawable.candidato_default).into(holder.imagenCandidato)
         holder.btnVotar.setOnClickListener {
             onClickCandidato(item)

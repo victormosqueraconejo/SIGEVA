@@ -62,7 +62,7 @@ class MasInformacionCandidatoFragment : BottomSheetDialogFragment() {
         imagenCandidatoFragment = view.findViewById(R.id.imagenCandidadoFragment)
 
         nombreCandidatoFragment.text = param1?.nombres ?: "Nombre no encontrado"
-        numeroCandidatoFragment.text = "00${param1?.numeroTarjeton}" ?: "000"
+        numeroCandidatoFragment.text = "${param1?.numeroTarjeton}" ?: "000"
         descripcionCandidatoFragment.text = param1?.propuesta ?: "Descripcion no encontrada"
 
         Glide.with(view.context)
@@ -75,9 +75,18 @@ class MasInformacionCandidatoFragment : BottomSheetDialogFragment() {
         }
 
         btnVotarFragment.setOnClickListener {
+
+
+            context?.let {
+                Toast.makeText(
+                    it,
+                    "Cargando, espera un momento.",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
             generarOtp(
-                LoginActivity.aprendiz.id,
-                SeleccionCandidatosActivity.idEleccionSeleccionCandidato
+              LoginActivity.aprendiz.id,
+            SeleccionCandidatosActivity.idEleccionSeleccionCandidato
             )
         }
     }
@@ -105,9 +114,11 @@ class MasInformacionCandidatoFragment : BottomSheetDialogFragment() {
                         context?.let {
                             Toast.makeText(it, mensaje, Toast.LENGTH_SHORT).show()
                             val intent = Intent(it, ConfirmarVotoActivity::class.java).apply {
+
                                 putExtra("codigoOtp", codigoOtp)
                                 putExtra("idCandidato", param1?.idcandidatos)
                                 putExtra("email", data.getString("email_enviado_a"))
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                             }
                             startActivity(intent)
                         }

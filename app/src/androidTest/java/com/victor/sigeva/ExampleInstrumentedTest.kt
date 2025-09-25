@@ -2,6 +2,7 @@ package com.victor.sigeva
 
 import android.content.Context
 import android.content.Intent
+import android.support.test.rule.ActivityTestRule
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.filters.SdkSuppress
@@ -14,6 +15,7 @@ import androidx.test.uiautomator.UiObject2
 import androidx.test.uiautomator.Until
 import junit.framework.TestCase.assertTrue
 import org.hamcrest.core.IsNull.notNullValue
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -150,4 +152,23 @@ class ChangeTextBehaviorTest2 {
 
 
 
+}
+
+
+@RunWith(AndroidJUnit4::class)
+class TestBackOTPActivity
+{
+    @get:Rule
+    var ruleActivity = ActivityTestRule(ConfirmarVotoActivity::class.java)
+
+
+
+    @Test
+    fun verificarNumeroDeElementos() {
+        // Simula la respuesta de la API
+
+
+        Thread.sleep(100000)
+
+        }
 }
