@@ -33,6 +33,8 @@ class MainActivity : AppCompatActivity() {
         recyclerViewVotaciones = findViewById(R.id.recyclerViewVotacionesActivas)
         recyclerViewVotaciones.layoutManager = LinearLayoutManager(this)
 
+
+
         // Al dar clic en una votacion
         val adapterVotacion = AdapterVotacionesActivas(lista) { votacion ->
             val intent = Intent(this, SeleccionCandidatosActivity::class.java)
@@ -48,26 +50,34 @@ class MainActivity : AppCompatActivity() {
 
     private fun cargarVotaciones(adapterVotacion: AdapterVotacionesActivas, intentos: Int) {
         try {
-            // Verificar que aprendiz esté disponible
             val centroFormacion = LoginActivity.aprendiz.CentroFormacion
 
             GetVotacion { votacions ->
-                // si la lista está vacía o no
                 if (votacions.isNotEmpty()) {
-                    adapterVotacion.ActulizarVotacion(votacions)
+                    // Filtrar por jornada
+                    val votacionFiltradas = votacions.filter { it.jornada == LoginActivity.aprendiz.jornada }
+
+                    // Mostrar u ocultar según el resultado del filtro
+                    if (votacionFiltradas.isNotEmpty()) {
+                        adapterVotacion.ActulizarVotacion(votacionFiltradas)
+                        cardNoVotaciones.isVisible = false
+                    } else {
+                        adapterVotacion.ActulizarVotacion(emptyList())
+                        cardNoVotaciones.isVisible = true
+                    }
                 } else {
+                    adapterVotacion.ActulizarVotacion(emptyList())
+                    cardNoVotaciones.isVisible = true
                     Toast.makeText(this, "No hay votaciones activas disponibles", Toast.LENGTH_SHORT).show()
                 }
             }
 
         } catch (e: UninitializedPropertyAccessException) {
-            // Si aprendiz no está inicializado y no hemos intentado muchas veces
             if (intentos < 5) {
                 Handler(Looper.getMainLooper()).postDelayed({
                     cargarVotaciones(adapterVotacion, intentos + 1)
-                }, 200) // Esperar 200ms y reintentar
+                }, 200)
             } else {
-                // Si después de varios intentos aún no está inicializado, regresar a login
                 Toast.makeText(this, "Error de sesión. Por favor, inicia sesión nuevamente.", Toast.LENGTH_SHORT).show()
                 regresarALogin()
             }
@@ -82,10 +92,8 @@ class MainActivity : AppCompatActivity() {
             val gson = Gson()
             val data = gson.fromJson(response, VotacionesAPI::class.java)
 
-            // respuesta no sea nula
             if (data != null && data.eleccionesActivas != null) {
                 actualizarVotacion(data.eleccionesActivas)
-                cardNoVotaciones.isVisible = false
             } else {
                 Toast.makeText(this, "No se pudieron obtener las votaciones.", Toast.LENGTH_SHORT).show()
                 cardNoVotaciones.isVisible = true
@@ -98,6 +106,7 @@ class MainActivity : AppCompatActivity() {
 
         client.add(request)
     }
+
 
     private fun regresarALogin() {
         val intent = Intent(this, LoginActivity::class.java)

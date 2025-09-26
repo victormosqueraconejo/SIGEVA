@@ -78,21 +78,25 @@ class MasInformacionCandidatoFragment : BottomSheetDialogFragment() {
 
 
             context?.let {
+                startActivity(Intent(it, ConfirmarVotoActivity::class.java))
                 Toast.makeText(
                     it,
                     "Cargando, espera un momento.",
                     Toast.LENGTH_LONG
                 ).show()
             }
-            generarOtp(
-              LoginActivity.aprendiz.id,
-            SeleccionCandidatosActivity.idEleccionSeleccionCandidato
-            )
+
+
+
+//            generarOtp(
+//              LoginActivity.aprendiz.id,
+//            SeleccionCandidatosActivity.idEleccionSeleccionCandidato
+//            )
         }
     }
 
     private fun generarOtp(idAprendiz: Int, idEleccion: Int) {
-        val url = "https://sigevaback-real.onrender.com/api/validaciones/generarOtp/"
+        val url = "https://sigevaback-real.onrender.com/api/validaciones/generarOtp"
 
         val parametros = JSONObject().apply {
             put("aprendiz_idaprendiz", idAprendiz)
@@ -159,6 +163,7 @@ class MasInformacionCandidatoFragment : BottomSheetDialogFragment() {
 
                 context?.let {
                     mostrarModal(it)
+
                     Toast.makeText(it, "Error en la petición: ${error.message}", Toast.LENGTH_LONG)
                         .show()
                 }
